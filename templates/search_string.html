@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>MGrep - Home page</title>
+	<meta charset="utf-8">
+	<!-- Bootstrap4 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
+	<!-- Icona del browser-->
+	<link rel="icon" href="/static/img/icon_browser.png" type="image/x-icon">
+</head>
+
+<body>
+
+<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+<div class="mgrep_menubar">
+  {% include 'menubar.html' %}
+</div>
+
+<!-- Form richiesta dati-->
+<div class="container">
+	<!-- Titolo della pagina -->
+	<h3>Search string in sources of Oracle Forms/Reports</h3>
+	<form>
+		<div class="row">
+			<div class="col">
+				<label for="e_stringa1">Search string1</label>
+				<input type="text" class="form-control form-control-sm" id="e_stringa1">
+			</div>
+			<div class="col">
+				<label for="e_stringa2">Search string2</label>
+				<input type="text" class="form-control form-control-sm" id="e_stringa2">
+			</div>
+		</div>	
+		
+		<div class="row">
+			<div class="col">
+				<div class="form-check">
+				<label class="form-check-label" for="c_flsearch">
+				<input type="checkbox" class="form-check-input" id="c_flsearch" value="">			
+				Execute search in folder</label>
+				</div>
+			</div>
+			<div class="col">
+				<label for="e_pathname">Folder name</label>
+				<input type="text" class="form-control form-control-sm" id="e_pathname">
+			</div>			
+			<!-- Pulsante per selezionare una directory -->
+			<div class="col">				
+				<input type="file" class="form-control-file" id="b_pathname">
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col">
+				<label for="e_filter">File filter</label>
+				<input type="text" class="form-control form-control-sm" id="e_filter">
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col">
+				<label for="e_excludepath">Exclude directories</label>
+				<input type="text" class="form-control form-control-sm" id="e_excludepath">
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col">
+				<div class="form-check">
+				<label class="form-check-label" for="c_dbsearch">
+				<input type="checkbox" class="form-check-input" id="c_dbsearch" value="">			
+				Execute search in OracleDB</label>
+				</div>
+			</div>
+			<div class="col">
+				<label for="e_dboracle1">Oracle connection1</label>
+				<input type="text" class="form-control form-control-sm" id="e_dboracle1">
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col">
+				<label for="e_dboracle2">Oracle connection2</label>
+				<input type="text" class="form-control form-control-sm" id="e_dboracle2">
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col">
+				<div class="form-check">
+				<label class="form-check-label" for="c_icomsearch">
+				<input type="checkbox" class="form-check-input" id="c_icomsearch" value="">			
+				Execute search in ICOM</label>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col">
+				<label for="e_outputfile">Output file csv</label>
+				<input type="text" class="form-control form-control-sm" id="e_outputfile">
+			</div>
+			
+			<div class="col">
+				<button type="button" class="btn btn-secondary" id="b_add_line">Add to pref. files</button>
+				<button type="button" class="btn btn-secondary" id="b_save_pref">Save Pref.</button>
+				<button type="button" class="btn btn-success" id="b_search">Start search</button>				
+			</div>
+		</div>
+	</form>	
+</div>
+
+<!-- Importo tramite Flask html contenente il piede della pagina -->
+<div class="mgrep_menubar">
+  {% include 'footer.html' %}
+</div>
+
+</body>
+</html>

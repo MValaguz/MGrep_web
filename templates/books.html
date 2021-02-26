@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>MGrep - Home page</title>
+	<meta charset="utf-8">
+	<!-- Bootstrap4 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
+	<!-- Icona del browser-->
+	<link rel="icon" href="/static/img/icon_browser.png" type="image/x-icon">
+	<!-- Libreria icone-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+</head>
+
+<body>
+
+<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+<div class="mgrep_menubar">
+  {% include 'menubar.html' %}
+</div>
+
+<!-- Intestazione di tabella-->
+<h3>Phone book</h3>
+
+<!-- Barra di ricerca-->
+<div class="container">    
+	<div class="row justify-content-center">
+		<div class="col-12 col-md-10 col-lg-8">
+			<form class="card card-sm">
+				<div class="card-body row no-gutters align-items-center">
+					<div class="col-auto">
+						<i class="fas fa-search h4 text-body"></i>
+					</div>					
+					<div class="col">
+						<input class="form-control form-control-lg form-control-borderless" type="search" id="id_ricerca" placeholder="Type here for search">
+					</div>					
+				</div>
+			</form>
+		</div>                        
+	</div>
+</div>
+
+<!-- Importo tramite Flask righe della rubrica caricate da Python (viene creata una tabella dal nome id_my_table_book-->
+<div class="table-responsive">
+{{ python_elenco_righe|safe }}
+</div>    
+
+<!-- Importo tramite Flask html contenente il piede della pagina -->
+<div class="mgrep_menubar">
+  {% include 'footer.html' %}
+</div>
+
+<!-- Javascript che nasconde le righe che non corrispondono alla ricerca inserita nel campo id_ricerca agendo sulla tabella id_my_table_book creata da programma rubrica.py-->
+<script>
+$(document).ready(function(){
+  $("#id_ricerca").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#id_my_table_book tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+
+</body>
+</html>

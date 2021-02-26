@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>MGrep - Home page</title>
+	<meta charset="utf-8">
+	<!-- Bootstrap4 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
+	<!-- Icona del browser-->
+	<link rel="icon" href="/static/img/icon_browser.png" type="image/x-icon">
+</head>
+
+<body>
+
+<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+<div class="mgrep_menubar">
+  {% include 'menubar.html' %}
+</div>
+
+<!-- Barra testata di pagina -->
+<div class="header-portfolio clearfix">
+ <h2 class="pull-left">Info</h2>
+</ul>
+</div><!-- /header-portfolio -->
+
+<!-- Contenuti (griglia) -->
+<div class="container">
+
+<div class="row">
+ <!-- Info di programma -->
+ <div class="col-sm-12">
+ <section id="info-programma" class="margine-bottom">
+  <h3 class="contatti-titoli">Program info</h3>
+  <p> This program was created by Marco Valaguzza. It's made by using Python 3.6, Flask 1.1.2 and Bootstrap 3.</p>
+ </section>
+</div> 
+
+<div class="row">
+ </div><!-- /Info di programma -->
+ <div class="col-sm-6 col-sm-push-6">
+ <section id="info-contatto" class="margine-bottom">
+  <h3 class="contatti-titoli">Where i am</h3>
+  <img class="thumbnail img-responsive" src="static/img/mappa.png">  
+ </section>
+ </div><!-- /col-sm-6 -->
+ <div class="col-sm-6 col-sm-pull-6">
+ <section id="modulo-di-contatto" class="margine-bottom">
+  <h3 class="contatti-titoli">Do you have some questions? Contact me!</h3>
+  <form id="contatti-form" class="form-horizontal">
+  <div class="form-group">
+   <label for="inputNome" class="col-sm-3 control-label">Name</label>
+   <div class="col-sm-9">
+    <input class="form-control" type="text" id="inputNome" name="inputNome"  class="input-with-feedback">
+   </div>
+  </div>
+  <div class="form-group">
+   <label for="inputEmail" class="col-sm-3 control-label">Email</label>
+   <div class="col-sm-9">
+    <input class="form-control" type="text" id="inputEmail" name="inputEmail"  class="input-with-feedback">
+   </div>
+  </div>
+  <div class="form-group">
+   <label for="textMessaggio" class="col-sm-3 control-label">Message</label>
+   <div class="col-sm-9">
+    <textarea class="form-control" id="textMessaggio" name="textMessaggio" rows="6" placeholder="Type here your message..."   class="input-with-feedback"></textarea>
+   </div>
+  </div>
+  <div class="form-group">
+   <div class="col-sm-9 col-sm-offset-3">
+    <button type="submit" class="btn btn-success btn-block">Send</button>
+   </div>
+  </div>
+  </form>
+ </section>
+ 
+ </div><!-- /col-lg-6 -->
+</div><!-- /row -->
+</div><!-- /.container -->
+
+<!-- Importo tramite Flask html contenente il piede della pagina -->
+<div class="mgrep_menubar">
+  {% include 'footer.html' %}
+</div>
+
+</body>
+</html>
