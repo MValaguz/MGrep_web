@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>MGrep - Home page</title>
+	<title>MGrep - Phone book</title>
 	<meta charset="utf-8">
 	<!-- Bootstrap4 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,12 +23,18 @@
 <body>
 
 <!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
-<div class="mgrep_menubar">
+<div>
   {% include 'menubar.html' %}
 </div>
 
-<!-- Intestazione di tabella-->
-<h3>Phone book</h3>
+<!-- Titolo della pagina-->
+<div class="container">    
+	<div class="row">
+		<div class="col text-center">
+			<h3>Phone book</h3>
+		</div>
+	</div>
+</div>	
 
 <!-- Barra di ricerca-->
 <div class="container">    
@@ -49,12 +55,14 @@
 </div>
 
 <!-- Importo tramite Flask righe della rubrica caricate da Python (viene creata una tabella dal nome id_my_table_book-->
-<div class="table-responsive">
-{{ python_elenco_righe|safe }}
+<div class="container-fluid">
+	<div class="table-responsive">
+		{{ python_elenco_righe|safe }}
+	</div>    
 </div>    
 
 <!-- Importo tramite Flask html contenente il piede della pagina -->
-<div class="mgrep_menubar">
+<div>
   {% include 'footer.html' %}
 </div>
 

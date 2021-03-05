@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>MGrep - Home page</title>
+	<title>MGrep - Search string</title>
 	<meta charset="utf-8">
 	<!-- Bootstrap4 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,7 +21,7 @@
 <body>
 
 <!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
-<div class="mgrep_menubar">
+<div>
   {% include 'menubar.html' %}
 </div>
 
@@ -30,7 +30,7 @@
 	<!-- Titolo della pagina -->
 	<h3>Search string in sources of Oracle Forms/Reports</h3>
 	<form>
-		<div class="row">
+		<div class="form-group row">
 			<div class="col">
 				<label for="e_stringa1">Search string1</label>
 				<input type="text" class="form-control form-control-sm" id="e_stringa1">
@@ -41,7 +41,7 @@
 			</div>
 		</div>	
 		
-		<div class="row">
+		<div class="form-group row">
 			<div class="col">
 				<div class="form-check">
 				<label class="form-check-label" for="c_flsearch">
@@ -59,21 +59,21 @@
 			</div>
 		</div>
 		
-		<div class="row">
+		<div class="form-group row">
 			<div class="col">
 				<label for="e_filter">File filter</label>
 				<input type="text" class="form-control form-control-sm" id="e_filter">
 			</div>
 		</div>
 		
-		<div class="row">
+		<div class="form-group row">
 			<div class="col">
 				<label for="e_excludepath">Exclude directories</label>
 				<input type="text" class="form-control form-control-sm" id="e_excludepath">
 			</div>
 		</div>
 		
-		<div class="row">
+		<div class="form-group row">
 			<div class="col">
 				<div class="form-check">
 				<label class="form-check-label" for="c_dbsearch">
@@ -87,14 +87,14 @@
 			</div>
 		</div>
 		
-		<div class="row">
+		<div class="form-group row">
 			<div class="col">
 				<label for="e_dboracle2">Oracle connection2</label>
 				<input type="text" class="form-control form-control-sm" id="e_dboracle2">
 			</div>
 		</div>
 		
-		<div class="row">
+		<div class="form-group row">
 			<div class="col">
 				<div class="form-check">
 				<label class="form-check-label" for="c_icomsearch">
@@ -104,7 +104,7 @@
 			</div>
 		</div>
 		
-		<div class="row">
+		<div class="form-group row">
 			<div class="col">
 				<label for="e_outputfile">Output file csv</label>
 				<input type="text" class="form-control form-control-sm" id="e_outputfile">
@@ -120,7 +120,7 @@
 </div>
 
 <!-- Importo tramite Flask html contenente il piede della pagina -->
-<div class="mgrep_menubar">
+<div>
   {% include 'footer.html' %}
 </div>
 

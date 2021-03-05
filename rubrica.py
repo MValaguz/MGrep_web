@@ -2,9 +2,9 @@
 
 """
  Creato da.....: Marco Valaguzza
- Piattaforma...: Python3.6 con libreria pyqt5
- Data..........: 04/12/2019
- Descrizione...: Programma per la ricerca nella rubrica aziendale. Restituisce una div html da inserire una pagina web.
+ Piattaforma...: Python3.6 
+ Data..........: 03/03/2021
+ Descrizione...: Programma per la ricerca nella rubrica aziendale. Restituisce una div html da inserire in una pagina web.
 """
 
 #Librerie sistema
@@ -20,7 +20,7 @@ def load_rubrica():
         # connessione al DB come amministratore
         v_connection = cx_Oracle.connect(user='SMILE', password='SMILE', dsn='ICOM_815')
     except:
-        return'Connection to oracle rejected!'
+        return 'Connection to oracle rejected!'
 
     # apro cursore
     v_cursor = v_connection.cursor()

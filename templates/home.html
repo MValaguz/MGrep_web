@@ -21,7 +21,7 @@
 <body>
 
 <!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
-<div class="mgrep_menubar">
+<div>
   {% include 'menubar.html' %}
 </div>
 
@@ -65,14 +65,14 @@
 	<div class="row">
 	<div class="col-sm-12">
 	 <!-- Questo è un esempio di sostituzione di codice pilotato da Python -->
-	 <h1 class="text-center"><small>{{ nome_utente }} Welcome to MGrep!</small></h1> 
+	 <h1 class="text-center"><small>{{ nome_utente }} Welcome to MGrep web version!</small></h1> 
 	</div><!-- /.col-sm-12 -->
 	</div><!-- /.row -->
 	</section><!-- /section presentazione -->
 </div><!-- /.container -->
 
 <!-- Importo tramite Flask html contenente il piede della pagina -->
-<div class="mgrep_menubar">
+<div>
   {% include 'footer.html' %}
 </div>
 
