@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>MGrep - Kill session</title>
+	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
+	{% include 'bootstrap.html' %}
+	<!--Gestione finestra modale-->
+	<script>
+		$(document).ready(function(){
+			$("#myModal").modal('show');
+		});
+	</script>
+	<!--Stile per finestra modale-->
+	<style>
+		.bs-example{
+			margin: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="bs-example">
+		<div id="myModal" class="modal fade" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Confirmation</h5>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<p>Do you want to kill the session {{ python_parametro_sid }}?</p>						
+					</div>
+					<div class="modal-footer">
+						<form method="post">
+							<button type="submit" name="b_cancel" value="click_b_cancel" class="btn btn-secondary">Cancel</button>
+							<button type="submit" name="b_kill" value="click_b_kill" class="btn btn-primary">Kill</button>
+						</form>							
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

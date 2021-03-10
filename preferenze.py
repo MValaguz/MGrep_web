@@ -108,11 +108,8 @@ class preferenze:
         # preferenze posizione delle window
         self.l_windows_pos = []
         
-        # preferenze elenco server
-        self.elenco_server = []        
-        self.elenco_server.append({'nome_server':'ICOM_815'})
-        self.elenco_server.append({'nome_server':'BACKUP_815'})
-        self.elenco_server.append({'nome_server':'BACKUP_2_815'})
+		# preferenze elenco server
+        self.elenco_server = ['ICOM_815','BACKUP_815','BACKUP_2_815']
 
     def carica(self):
         """

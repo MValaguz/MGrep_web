@@ -20,13 +20,14 @@ class recompiler_class(Form):
 	"""
 	   classe per creazione campi all'interno dell'html
 	"""	
-	e_server_name = SelectField('Oracle name server:', choices = [('ICOM_815', 'ICOM_815'), ('BACKUP_815', 'BACKUP_815'), ('BACKUP_2_815', 'BACKUP_2_815')])
+	e_server_name = SelectField('Oracle name server:')
 	b_oggetti_invalidi = SubmitField("Search invalid objects")
 	b_compila_tutto = SubmitField("Compile all invalid objects")
        
 def ricerca_oggetti_invalidi(o_preferenze, e_server_name):
     """
-        carica elenco degli oggetti invalidi
+        funzione che carica elenco degli oggetti invalidi
+        restituendo una tabella html
     """    
     # connessione al DB come amministratore        
     try:
@@ -68,7 +69,8 @@ def ricerca_oggetti_invalidi(o_preferenze, e_server_name):
                                                
 def compila_tutto(o_preferenze, e_server_name):
     """
-        compila tutti gli oggetti invalidi
+        funzione che compila tutti gli oggetti invalidi
+        restituendo una tabella html
     """
     try:
         # connessione al DB come amministratore
