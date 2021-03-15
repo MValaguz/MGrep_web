@@ -35,8 +35,8 @@ def load_rubrica():
     v_cursor.close()
     v_connection.close()
     
-    # intestazioni 
-    v_html = '<table class="table table-striped">'    
+    # intestazioni (la classe sortable dipende da uno specifico script da includere nella pagina)
+    v_html = '<table class="table table-striped sortable">'    
     v_html += '<thead> <tr> <th>Company</th> <th>Employee</th> <th>Phone</th> <th>Unit</th> <th>Email</th> <th>Function</th> </tr> </thead>'
                             
     # carico la matrice dei dati 

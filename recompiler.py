@@ -12,11 +12,11 @@ import sys
 # Librerie di data base
 import cx_Oracle
 # Importa librerie per creazione form
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import StringField, TextField, IntegerField, TextAreaField, SubmitField, RadioField, SelectField
 from wtforms import validators, ValidationError
 
-class recompiler_class(Form):
+class recompiler_class(FlaskForm):
 	"""
 	   classe per creazione campi all'interno dell'html
 	"""	

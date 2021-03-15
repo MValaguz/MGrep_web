@@ -271,10 +271,57 @@ def killa_sessione(p_sid,
             
     # chiudo la sessione 
     v_cursor = v_connection.cursor()
-    v_cursor.execute("ALTER SYSTEM KILL SESSION '" + str(p_sid).strip() + "," + str(p_serial).strip() + "'")
+    try:
+        v_cursor.execute("ALTER SYSTEM KILL SESSION '" + str(p_sid).strip() + "," + str(p_serial).strip() + "'")
+    except:
+        return 'Error while kill the session'        
+
+    # chiudo tutto
     v_cursor.close()
     v_connection.close()
-    return 'The session is being closed.'
+    return 'ok'
+
+def informazioni_sessione(p_sid,                          
+                          p_oracle_user_sys,
+                          p_oracle_password_sys,
+                          p_oracle_dsn_real):
+    """
+        restituisce tabella html con le informazioni della sessione oracle tramite parametro p_sid 
+    """
+    try:
+        # connessione al DB come amministratore
+        v_connection = cx_Oracle.connect(user=p_oracle_user_sys, password=p_oracle_password_sys, dsn=p_oracle_dsn_real, mode=cx_Oracle.SYSDBA)            
+    except:
+        return 'Connection to oracle rejected!'
+            
+    # chiudo la sessione 
+    v_cursor = v_connection.cursor()
+    try:
+        v_cursor.execute("SELECT sql_text FROM v$sql WHERE hash_value IN (SELECT hash_value FROM v$open_cursor WHERE SID=" + str(p_sid) + ") GROUP BY sql_text")
+    except:
+        return 'Error while retrive session info'        
+
+    # intestazioni 
+    v_html = '<table class="table">'      
+    v_html += '<thead> <tr> <th>Open cursor</th> </tr> </thead>'    
+                            
+    # carico la matrice dei dati
+    v_html += '<tbody id="id_my_table">'
+    for row in v_cursor:                    
+        # apertura riga
+        v_html += '<tr>'        
+        v_html += '<td>' + str(row[0]) + '</td>'            
+        # chiusura riga
+        v_html += '</tr>'
+            
+    # chiudo tabella html
+    v_html += '</tbody> </table>'
+
+    # chiudo tutto
+    v_cursor.close()
+    v_connection.close()
+
+    return v_html    
 
 def estrae_elenco_tabelle_sqlite(p_type,
                                  p_sqlite_db_name):

@@ -2,8 +2,8 @@
 
 """
  Creato da.....: Marco Valaguzza
- Piattaforma...: Python3.6 con libreria pyqt5
- Data..........: 05/12/2019
+ Piattaforma...: Python3.6 
+ Data..........: 12/03/2021
  Descrizione...: Programma per la ricerca di blocchi di sessione in ambiente oracle. Restituisce una div html da inserire in una pagina web.
 """
 
@@ -12,11 +12,11 @@ import sys
 # Librerie di data base
 import cx_Oracle
 # Importa librerie per creazione form
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import StringField, TextField, IntegerField, TextAreaField, SubmitField, RadioField, SelectField
 from wtforms import validators, ValidationError
 
-class sessions_locks_class(Form):
+class sessions_locks_class(FlaskForm):
 	"""
 	   classe per creazione campi all'interno dell'html
 	"""	
@@ -104,7 +104,7 @@ def ricerca_blocchi_sessioni(o_preferenze, e_server_name):
     v_html = '<table class="table table-hover">'      
     v_html += '<thead> <tr> <th>Sid</th> <th>Serial Nr.</th> <th>Username</th> <th>Terminal</th> <th>Referent</th> <th>Phone</th> <th>Location</th> <th>Program</th> <th>Object Name</th> <th style="text-align:center">Kill session</th> </tr> </thead>'    
                             
-    # carico la matrice dei dati. Nel campo sid inseirsco degli spazi in base al valore del campo level 
+    # carico la matrice dei dati. Nel campo sid inserisco degli spazi in base al valore del campo level 
     v_html += '<tbody id="id_my_table">'
     for row in matrice_dati:                    
         # apertura riga
@@ -127,7 +127,7 @@ def ricerca_blocchi_sessioni(o_preferenze, e_server_name):
         v_html += '<td>' + str(row[8]) + '</td>'            
 
         # nel pulsante di kill session annego il rif alla pagina che killa le sessioni con i seguenti parametri: server, sid e numero di serie
-        v_html += '<td align="center">  <a href="kill_session?p_server='+e_server_name+'&p_sid='+str(row[0])+'&p_serial='+str(row[1])+'"> <i class="fas fa-power-off"> </i> </a> </td>'            
+        v_html += '<td align="center">  <a href="session_kill?p_server='+e_server_name+'&p_sid='+str(row[0])+'&p_serial='+str(row[1])+'&p_page=sessions_locks"> <i class="fas fa-power-off"> </i> </a> </td>'            
         
         # chiusura riga
         v_html += '</tr>'

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>MGrep - Kill session</title>
+	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
+	{% include 'bootstrap.html' %}
+</head>
+
+<body>
+
+<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+<div>
+	{% include 'menubar.html' %}
+</div>
+
+<!-- Contenuti (griglia) -->
+<div class="container">	
+	<!-- Questa div contiene lo spazio dove viene visualizzato un messaggio flash, di conferma, quando l'utente clicca sul button send-->
+	<div class="row justify-content-center">
+		{% for message in get_flashed_messages() %}		 
+		<div class="alert alert-success alert-dismissible fade show">
+			<strong>Success!</strong> {{ message }}
+			<button type="button" class="close" data-dismiss="alert">&times;</button>    
+		</div>
+		{% endfor %}
+		{% block content %} {% endblock %}
+	</div>
+
+	<!-- Richiesta conferma di chiusura della sessione-->
+	<div class="row justify-content-center">
+		<div class="col-6">			
+			<h3 style="text-align:center">Do you want to kill the session {{ python_parametro_sid }}?</h3>
+			<form method="post" class="form-horizontal">
+				<div class="form-group row">
+					<div class="col">
+						<button type="submit" name="b_close" value="click_b_close" class="btn btn-secondary btn-block">Cancel</button>
+					</div>
+					<div class="col">	
+						<button type="submit" name="b_kill" value="click_b_kill" class="btn btn-primary btn-block">Kill</button>
+					</div>	
+				</div>
+			</form>														
+		</div>
+	</div>
+</body>
+
+</html>

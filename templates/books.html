@@ -5,6 +5,9 @@
 	<title>MGrep - Phone book</title>
 	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
 	{% include 'bootstrap.html' %}
+	<!-- Includo la libreria per ordinare le colonne di tabella tramite la classe "sortable" -->
+	<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+	<style> table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after { content: " \25B4\25BE" } </style>
 </head>
 
 <body>
