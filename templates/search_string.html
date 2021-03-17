@@ -5,6 +5,32 @@
 	<title>MGrep - Search string</title>
 	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
 	{% include 'bootstrap.html' %}
+	<!-- Includo la libreria per ordinare le colonne di tabella tramite la classe "sortable" -->
+	<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+	<style> table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after { content: " \25B4\25BE" } </style>		
+	<!-- Definizione dello stile che visualizza lo spinner durante l'esecuzione della ricerca-->
+	<style>
+		.loader {			
+		  	border: 10px solid #f3f3f3;
+		  	border-radius: 50%;
+		  	border-top: 10px solid #3498db;
+		  	width: 60px;
+		  	height: 60px;
+		  	-webkit-animation: spin 2s linear infinite; /* Safari */
+		  	animation: spin 2s linear infinite;
+		}
+		
+		/* Safari */
+		@-webkit-keyframes spin {
+		  0% { -webkit-transform: rotate(0deg); }
+		  100% { -webkit-transform: rotate(360deg); }
+		}
+		
+		@keyframes spin {
+		  0% { transform: rotate(0deg); }
+		  100% { transform: rotate(360deg); }
+		}					
+	</style>
 </head>
 
 <body>
@@ -14,99 +40,138 @@
   {% include 'menubar.html' %}
 </div>
 
+<!-- Titolo della pagina-->
+<div class="container">    
+	<div class="row">
+		<div class="col text-center">
+			<h3>Search string in sources of Oracle Forms/Reports</h3>
+		</div>
+	</div>
+</div>	
+
+<!-- Spinner di elaborazione in corso (v. definizione stile di cui sopra) e funzione collegata in fondo a questa pagina-->
+<div id="idAttendere" style="display: none;">
+	<div class="container">    
+		<div class="row justify-content-center">		
+			<div class="loader"></div>		
+		</div>
+	</div>
+</div>
+
+<!-- Questa div contiene lo spazio dove viene visualizzato un messaggio flash, di errore sui controlli dei valori inseriti-->
+<div class="row justify-content-center">
+	{% for message in get_flashed_messages() %}		 
+	<div class="alert alert-danger alert-dismissible fade show">
+		<strong>Error!</strong> {{ message }}
+		<button type="button" class="close" data-dismiss="alert">&times;</button>    
+	</div>
+	{% endfor %}
+	{% block content %} {% endblock %}
+</div>
+
 <!-- Form richiesta dati-->
 <div class="container">
-	<!-- Titolo della pagina -->
-	<h3>Search string in sources of Oracle Forms/Reports</h3>
-	<form>
-		<div class="form-group row">
-			<div class="col">
-				<label for="e_stringa1">Search string1</label>
-				<input type="text" class="form-control form-control-sm" id="e_stringa1">
-			</div>
-			<div class="col">
-				<label for="e_stringa2">Search string2</label>
-				<input type="text" class="form-control form-control-sm" id="e_stringa2">
-			</div>
-		</div>	
-		
-		<div class="form-group row">
-			<div class="col">
-				<div class="form-check">
-				<label class="form-check-label" for="c_flsearch">
-				<input type="checkbox" class="form-check-input" id="c_flsearch" value="">			
-				Execute search in folder</label>
+	<form method="post">
+		<div class="row justify-content-center">
+			<div class="col-md">
+				<div class="form-group row">
+					<!-- String1 (vengono assegnate classi boostrap)-->			
+					{{ python_form.e_stringa1.label(class_="col-4 control-label") }}								
+					<div class="col-4">
+						{{ python_form.e_stringa1(class_="form-control") }}								
+					</div>	
+				</div>
+				
+				<div class="form-group row">
+					<!-- String2 (vengono assegnate classi boostrap)-->			
+					{{ python_form.e_stringa2.label(class_="col-4 control-label") }}								
+					<div class="col-4">				
+						{{ python_form.e_stringa2(class_="form-control") }}								
+					</div>			
+				</div>
+				
+				<div class="form-group row">
+					<!-- Flag execute search in folder (vengono assegnate classi boostrap)-->			
+					{{ python_form.c_flsearch.label(class_="col-4 control-label") }}								
+					<div class="col-4">				
+						{{ python_form.c_flsearch }}					
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<!-- Folder name (vengono assegnate classi boostrap)-->				
+					{{ python_form.e_pathname.label(class_="col-4 control-label") }}												
+					<div class="col-4">				
+						{{ python_form.e_pathname(class_="form-control") }}									
+					</div>			
+				</div>
+				
+				<div class="form-group row">
+					<!-- File filter (vengono assegnate classi boostrap)-->			
+					{{ python_form.e_filter.label(class_="col-4 control-label") }}												
+					<div class="col-4">				
+						{{ python_form.e_filter(class_="form-control") }}													
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<!-- Exclude directories (vengono assegnate classi boostrap)-->			
+					{{ python_form.e_excludepath.label(class_="col-4 control-label") }}												
+					<div class="col-4">				
+						{{ python_form.e_excludepath(class_="form-control") }}													
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<!-- Execute search in DB Oracle (vengono assegnate classi boostrap)-->			
+					{{ python_form.c_dbsearch.label(class_="col-4 control-label") }}												
+					<div class="col-4">				
+						{{ python_form.c_dbsearch }}																	
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<!-- Oracle connection1 (vengono assegnate classi boostrap)-->				
+					{{ python_form.e_dboracle1.label(class_="col-4 control-label") }}												
+					<div class="col-4">				
+						{{ python_form.e_dboracle1(class_="form-control") }}																					
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<!--  Oracle connection2 (vengono assegnate classi boostrap)-->			
+					{{ python_form.e_dboracle2.label(class_="col-4 control-label") }}												
+					<div class="col-4">				
+						{{ python_form.e_dboracle2(class_="form-control") }}																									
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<!-- Execute search in icom (vengono assegnate classi boostrap)-->			
+					{{ python_form.c_icomsearch.label(class_="col-4 control-label") }}												
+					<div class="col-4">				
+						{{ python_form.c_icomsearch }}																									
+					</div>
 				</div>
 			</div>
-			<div class="col">
-				<label for="e_pathname">Folder name</label>
-				<input type="text" class="form-control form-control-sm" id="e_pathname">
-			</div>			
-			<!-- Pulsante per selezionare una directory -->
-			<div class="col">				
-				<input type="file" class="form-control-file" id="b_pathname">
-			</div>
 		</div>
-		
-		<div class="form-group row">
-			<div class="col">
-				<label for="e_filter">File filter</label>
-				<input type="text" class="form-control form-control-sm" id="e_filter">
-			</div>
-		</div>
-		
-		<div class="form-group row">
-			<div class="col">
-				<label for="e_excludepath">Exclude directories</label>
-				<input type="text" class="form-control form-control-sm" id="e_excludepath">
-			</div>
-		</div>
-		
-		<div class="form-group row">
-			<div class="col">
-				<div class="form-check">
-				<label class="form-check-label" for="c_dbsearch">
-				<input type="checkbox" class="form-check-input" id="c_dbsearch" value="">			
-				Execute search in OracleDB</label>
-				</div>
-			</div>
-			<div class="col">
-				<label for="e_dboracle1">Oracle connection1</label>
-				<input type="text" class="form-control form-control-sm" id="e_dboracle1">
-			</div>
-		</div>
-		
-		<div class="form-group row">
-			<div class="col">
-				<label for="e_dboracle2">Oracle connection2</label>
-				<input type="text" class="form-control form-control-sm" id="e_dboracle2">
-			</div>
-		</div>
-		
-		<div class="form-group row">
-			<div class="col">
-				<div class="form-check">
-				<label class="form-check-label" for="c_icomsearch">
-				<input type="checkbox" class="form-check-input" id="c_icomsearch" value="">			
-				Execute search in ICOM</label>
-				</div>
-			</div>
-		</div>
-		
-		<div class="form-group row">
-			<div class="col">
-				<label for="e_outputfile">Output file csv</label>
-				<input type="text" class="form-control form-control-sm" id="e_outputfile">
-			</div>
-			
-			<div class="col">
-				<button type="button" class="btn btn-secondary" id="b_add_line">Add to pref. files</button>
-				<button type="button" class="btn btn-secondary" id="b_save_pref">Save Pref.</button>
-				<button type="button" class="btn btn-success" id="b_search">Start search</button>				
+
+		<div class="row justify-content-center">
+			<div class="col-md">				
+				{{ python_form.b_search(class_="btn btn-primary btn-block", onclick="Visualizza_idAttendere()") }}					
 			</div>
 		</div>
 	</form>	
 </div>
+
+<!-- Importo tramite Flask righe caricate da Python come risulato della ricerca-->	
+<div class="container">	
+	<div class="row justify-content-center">
+		<div class="col-md">
+			{{ python_elenco_righe|safe }}
+		</div>    
+	</div>
+</div> 
 
 <!-- Importo tramite Flask html contenente il piede della pagina -->
 <div>
@@ -114,4 +179,16 @@
 </div>
 
 </body>
+
+<!-- Funzione per visualizzare/nascondere lo spinner di elaborazione in corso-->
+<script>
+	function Visualizza_idAttendere() {
+	  var x = document.getElementById("idAttendere");
+	  if (x.style.display === "none") {
+		x.style.display = "block";
+	  } else {
+		x.style.display = "none";
+	  }
+	}
+</script>
 </html>

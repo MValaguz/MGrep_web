@@ -2,3 +2,5 @@
 *.pyc
 *.pyc
 *.pwd
+.vscode
+__pycache__

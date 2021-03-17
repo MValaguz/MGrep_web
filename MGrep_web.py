@@ -51,10 +51,30 @@ def home():
 #---------------------------------------	
 # Apertura della pagina ricerca stringa
 #---------------------------------------	
-@app.route('/search_string')
-def search_string():        
-    return render_template('search_string.html')		
+@app.route('/search_string', methods=('GET', 'POST'))
+def search_string():
+	from search_string import search_string_class
+	from search_string import carica_default
+	from search_string import ricerca_stringhe
+
+	# creo la parte di form 
+	form = search_string_class()	
 	
+	# controllo se eseguire il post
+	v_tab_html = ''		
+	if request.method == 'POST':
+		if request.form.get('b_search'):
+			v_errore, v_tab_html = ricerca_stringhe(form)			
+		if v_errore != 'Ok':
+			flash(v_errore)	
+	# oppure caricare i default
+	else:
+		carica_default(form, o_preferenze)							
+	
+	return render_template('search_string.html',
+							python_form=form,
+							python_elenco_righe=v_tab_html)
+
 #---------------------------------------	
 # Apertura della pagina di recompiler
 #---------------------------------------	
