@@ -276,6 +276,28 @@ def session_info():
 	return render_template('session_info.html', python_info_sessione=v_info_sessione)	
 
 #---------------------------------------	
+# Apertura della pagina ascii graphics generator
+#---------------------------------------	
+@app.route('/ascii_graphics', methods=('GET', 'POST'))
+def ascii_graphics():
+	# importa le funzioni di servizio alla pagina
+	from ascii_graphics import ascii_graphics_class
+	from ascii_graphics import converte_in_big_text
+
+	# carico la parte di form (elenco fonts e pulsanti)
+	form = ascii_graphics_class()
+
+	# se premuto il pulsante di conferma procedo con la conversione
+	v_testo_convertito = ''
+	if request.method == 'POST' and request.form.get('b_esegue'):		
+		v_testo_convertito = converte_in_big_text(form.e_fonts_list.data, form.e_converte.data)	
+		
+	# restituisco il rendering della pagina
+	return render_template('ascii_graphics.html',
+							python_form=form, 
+							python_testo_convertito=v_testo_convertito)	
+
+#---------------------------------------	
 # Apertura della pagina elenco telefonico
 #---------------------------------------	
 @app.route('/books')

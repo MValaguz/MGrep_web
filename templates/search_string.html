@@ -8,6 +8,8 @@
 	<!-- Includo la libreria per ordinare le colonne di tabella tramite la classe "sortable" -->
 	<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 	<style> table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after { content: " \25B4\25BE" } </style>		
+	<!-- Includo la libreria per esportare i dati in excel e csv-->
+	<script src="/static/plugin/excellentexport-1.4/excellentexport.js"></script>
 	<!-- Definizione dello stile che visualizza lo spinner durante l'esecuzione della ricerca-->
 	<style>
 		.loader {			
@@ -151,16 +153,35 @@
 					{{ python_form.c_icomsearch.label(class_="col-4 control-label") }}												
 					<div class="col-4">				
 						{{ python_form.c_icomsearch }}																									
-					</div>
+					</div>					
 				</div>
 			</div>
 		</div>
-
+		
+		<!-- Pulsanti di avvio ricerca e export dei dati -->
 		<div class="row justify-content-center">
-			<div class="col-md">				
+			<div class="col-auto">
 				{{ python_form.b_search(class_="btn btn-primary btn-block", onclick="Visualizza_idAttendere()") }}					
 			</div>
+			<div class="col-auto">
+				<!-- Pulsanti per l'export dei dati (v. id_my_table_book che è il nome della tabella creata lato Python)-->
+				<div class="btn-group">
+					<button type="button" class="btn btn-secondary"><i class="fa fa-download"></i></button>
+					<button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+					<span class="caret"></span>
+					</button>
+					<div class="dropdown-menu">
+						<div class="dropdown-item" href="#">
+							<a download="Search_Results.xls" href="#" onclick="return ExcellentExport.excel(this, 'id_my_table', 'Phone book');">Export to Excel</a>
+						</div>
+					<div class="dropdown-item" href="#">
+						<a download="Search_Results.csv" href="#" onclick="return ExcellentExport.csv(this, 'id_my_table');">Export to CSV</a>
+					</div>
+					</div>			
+				</div>
+			</div>
 		</div>
+		
 	</form>	
 </div>
 

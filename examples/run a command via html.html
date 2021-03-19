@@ -1,10 +1,10 @@
 <html>
  <head>
-     <script language="JavaScript" type="text/javascript">
-         MyObject = new ActiveXObject( "WScript.Shell" )
-         function RunNotePad()
+     <script language="JavaScript" type="text/javascript">         
+         function Esegui_Comando_Windows()
          {
-            MyObject.Run("notepad") ;
+            var shell = WScript.CreateObject("WScript.Shell");
+            shell.Run("start notepad");
          }
 
     </script>
@@ -12,6 +12,6 @@
  <body>
     <h1>Run a Program</h1>
     This script launch the file >> c:\windows\notepad.exe<p>
-    <button onclick="RunNotePad()">Run Windows NotePad</button>
+    <button onclick="Esegui_Comando_Windows()">Run Windows NotePad</button>
  </body>
 </html>
