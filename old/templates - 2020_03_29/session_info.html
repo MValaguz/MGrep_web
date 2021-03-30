@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>MGrep - Session Info</title>
+	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
+	{% include 'bootstrap.html' %}
+</head>
+
+<body>
+
+<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+<div>
+	{% include 'menubar.html' %}
+</div>
+
+<!-- Contenuti (griglia) -->
+{{ python_info_sessione|safe }}
+
+</html>

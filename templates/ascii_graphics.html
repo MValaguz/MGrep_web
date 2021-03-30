@@ -2,75 +2,66 @@
 <html>
 
 <head>
-	<title>MGrep - ASCII graphics text generator</title>
 	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
 	{% include 'bootstrap.html' %}
 </head>
 
 <body>
 
-<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
-<div>
-  {% include 'menubar.html' %}
-</div>
+	<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+  	{% include 'menubar.html' %}
 
-<!-- Titolo della pagina-->
-<div class="container">    
-	<div class="row">
-		<div class="col text-center">
-			<h3>ASCII graphics text generator</h3>
-		</div>
-	</div>
-</div>	
+	 <!--Main-->
+	 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"><div style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;" class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+
+		<!-- Titolo della pagina-->
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">ASCII graphics text generator</h1>            
+        </div>
 	
-<!-- Contenuti (griglia) -->
-<div class="container">			
-	<!-- Form di input dei dati-->
-	<div class="row justify-content-center">
-		<div class="col-6">					    			
-			<form method="post" class="form-horizontal">
-				<div class="form-group row">
-					<!-- Label elenco fonts (viene assegnata una classe boostrap)-->
-					{{ python_form.e_fonts_list.label(class_="col-sm-4 control-label") }}					
-					<!-- Lista di valori elenco fonts (viene assegnata una classe boostrap)-->
-					<div class="col-sm-4">
-						{{ python_form.e_fonts_list(class_="form-control") }}
-					</div>
-				</div> 						
-				<div class="form-group row">
-					<!-- Label input testo da convertire (viene assegnata una classe boostrap)-->
-					{{ python_form.e_converte.label(class_="col-sm-4 control-label") }}					
-					<!-- Input testo da convertire (viene assegnata una classe boostrap)-->
-					<div class="col-sm-4">
-						{{ python_form.e_converte(class_="form-control") }}					
-					</div>					
-				</div> 						
-				<div class="form-group row">
-					<!-- Pulsante di avvio ricerca dei locks (viene assegnata una classe boostrap)-->
-					<div class="col">
-						{{ python_form.b_esegue(class_="btn btn-primary btn-block") }}
-					</div>					
+		<!-- Contenuti (griglia) -->
+		<div class="container">			
+			<!-- Form di input dei dati-->
+			<div class="row justify-content-center">
+				<div class="col-6">					    			
+					<form method="post" class="form-horizontal">
+						<div class="form-group row">
+							<!-- Label elenco fonts (viene assegnata una classe boostrap)-->
+							{{ python_form.e_fonts_list.label(class_="col-sm-4 control-label") }}					
+							<!-- Lista di valori elenco fonts (viene assegnata una classe boostrap)-->
+							<div class="col-sm-4">
+								{{ python_form.e_fonts_list(class_="form-control") }}
+							</div>
+						</div> 						
+						<div class="form-group row">
+							<!-- Label input testo da convertire (viene assegnata una classe boostrap)-->
+							{{ python_form.e_converte.label(class_="col-sm-4 control-label") }}					
+							<!-- Input testo da convertire (viene assegnata una classe boostrap)-->
+							<div class="col-sm-4">
+								{{ python_form.e_converte(class_="form-control") }}					
+							</div>					
+						</div> 						
+						<div class="form-group row">
+							<!-- Pulsante di avvio ricerca dei locks (viene assegnata una classe boostrap)-->
+							<div class="col">
+								{{ python_form.b_esegue(class_="btn btn-primary btn-block") }}
+							</div>					
+						</div>
+					</form>			
 				</div>
-			</form>			
+			</div>
 		</div>
-	</div>
-</div>
 
-<!-- Risultato della conversione-->
-</div class="container">	
-	<div class="row justify-content-center">
-		<div class="col-auto">					    
-			<textarea rows=10 cols=100 style = "font-family:'Courier New', monospace;font-size:16px;">		
-				{{ python_testo_convertito }}		
-			</textarea>
+		<!-- Risultato della conversione-->
+		<div class="row justify-content-center">
+			<div class="col-6">				
+				<textarea name="risultato" rows=10 cols=85 style = "font-family:'Courier New', monospace;font-size:16px;">{{ python_testo_convertito }}</textarea>		
+			</div>
 		</div>
-	</div>
-</div>
+	 </main>
 
-<!-- Importo tramite Flask html contenente il piede della pagina -->
-<div>
-  {% include 'footer.html' %}
-</div>
+<!-- Importo tramite Flask html contenente la parte finale della pagina -->
+{% include 'footer.html' %}
 
 </body>
 </html>

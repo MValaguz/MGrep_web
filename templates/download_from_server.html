@@ -9,51 +9,44 @@
 <body>
 
 	<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
-	{% include 'menubar.html' %}
-
+  	{% include 'menubar.html' %}
+	
 	<!--Main-->
 	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"><div style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;" class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
 
 		<!-- Titolo della pagina-->
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-			<h1 class="h2">Kill session</h1>            
-		</div>
-
-		<!-- Contenuti (griglia) -->
-		<div class="container">	
-			<!-- Questa div contiene lo spazio dove viene visualizzato un messaggio flash, di conferma, quando l'utente clicca sul button send-->
-			<div class="row justify-content-center">
-				{% for message in get_flashed_messages() %}		 
-				<div class="alert alert-success alert-dismissible fade show">
-					<strong>Success!</strong> {{ message }}
-					<button type="button" class="close" data-dismiss="alert">&times;</button>    
-				</div>
-				{% endfor %}
-				{% block content %} {% endblock %}
-			</div>
-
-			<!-- Richiesta conferma di chiusura della sessione-->
-			<div class="row justify-content-center">
-				<div class="col-6">			
-					<h3 style="text-align:center">Do you want to kill the session {{ python_parametro_sid }}?</h3>
-					<form method="post" class="form-horizontal">
-						<div class="form-group row">
-							<div class="col">
-								<button type="submit" name="b_close" value="click_b_close" class="btn btn-secondary btn-block">Cancel</button>
-							</div>
-							<div class="col">	
-								<button type="submit" name="b_kill" value="click_b_kill" class="btn btn-primary btn-block">Kill</button>
-							</div>	
-						</div>
-					</form>														
-				</div>
-			</div>
+			<h1 class="h2">Download an object from iAS12g</h1>            
 		</div>
 	
+		<!-- Contenuti (griglia) -->
+		<div class="container">			
+			<!-- Form di input dei dati-->
+			<div class="row justify-content-center">
+				<div class="col-6">					    			
+					<form method="post" class="form-horizontal">
+						<div class="form-group row">
+							<!-- Label input nome file da scaricare (viene assegnata una classe boostrap)-->
+							{{ python_form.e_source.label(class_="col-sm-4 control-label") }}					
+							<!-- Input nome file da scaricare (viene assegnata una classe boostrap)-->
+							<div class="col-sm-4">
+								{{ python_form.e_source(class_="form-control") }}					
+							</div>					
+						</div> 						
+						<div class="form-group row">
+							<!-- Pulsante di avvio scaricamento file (viene assegnata una classe boostrap)-->
+							<div class="col">
+								{{ python_form.b_esegue(class_="btn btn-primary btn-block") }}
+							</div>					
+						</div>
+					</form>			
+				</div>
+			</div>
+		</div>
 	</main>
+
 <!-- Importo tramite Flask html contenente la parte finale della pagina -->
 {% include 'footer.html' %}
 
 </body>
-
 </html>

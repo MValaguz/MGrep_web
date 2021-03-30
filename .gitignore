@@ -4,3 +4,4 @@
 *.pwd
 .vscode
 __pycache__
+/temp

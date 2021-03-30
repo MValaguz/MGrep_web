@@ -393,6 +393,8 @@ class t_report_class():
                                         
                                         PRIMARY KEY(FNAME_CO, PAGE_NU, POSIZ_NU)
                           )""")
+        # creo indice
+        self.curs.execute("CREATE UNIQUE INDEX IF NOT EXISTS UT_REPORT_IDX_01 ON UT_REPORT (FNAME_CO, PAGE_NU, POSIZ_NU)")
         
         # creo una lista con i nomi delle colonne di tabella. Essa mi servirà per costriure il dizionario
         # contentente il record in formato mnemonico letto dalla tabella

@@ -1,0 +1,64 @@
+<!-- Header barra di navigazione -->
+<header>
+
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <!-- Bottone per versione mobile -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Barra menu -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">      
+        <ul class="navbar-nav mx-auto">
+
+            <!-- Brand -->
+            <a class="navbar-brand" href="/">
+            <img src="/static/img/mgrep_logo.png" alt="Logo" style="width:100px;">
+            </a>  
+
+            <!-- Link Ricerca -->
+            <li class="nav-item">
+            <a class="nav-link" href="search_string">Search strings</a>
+            </li>
+
+            <!-- Menu oracle-->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Oracle</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="recompiler">Invalid objects</a>
+                    <a class="dropdown-item" href="sessions_locks">Sessions Locks</a>
+                    <a class="dropdown-item" href="table_locks">Table Locks</a>
+                    <a class="dropdown-item" href="sessions_list">Sessions</a>
+                    <a class="dropdown-item" href="top_sessions">Top Sessions</a>
+                    <a class="dropdown-item" href="#">Job status</a>
+                    <a class="dropdown-item" href="#">Table space</a>
+                    <a class="dropdown-item" href="#">Table wasted</a>
+                    <a class="dropdown-item" href="#">Servers status</a>
+                    <a class="dropdown-item" href="#">Volume</a>
+                </div>
+            </li>
+
+            <!-- Menu Tools-->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Tools</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Import-export</a>
+                    <a class="dropdown-item" href="ascii_graphics">Ascii Graphics generator</a>        
+                    <a class="dropdown-item" href="download_from_server">Download an object from iAS12g</a>		
+                </div>
+            </li>
+
+            <!-- Rubrica -->
+            <li class="nav-item">
+            <a class="nav-link" href="books">Phone book</a>
+            </li>
+
+            <!-- Info -->
+            <li class="nav-item">
+            <a class="nav-link" href="info">Info</a>
+            </li>
+        </ul>
+    </div>
+</nav> 
+
+</header><!-- /header -->

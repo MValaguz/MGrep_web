@@ -40,7 +40,7 @@ def load_rubrica():
     v_html += '<thead> <tr> <th>Company</th> <th>Employee</th> <th>Phone</th> <th>Unit</th> <th>Email</th> <th>Function</th> </tr> </thead>'
                             
     # carico la matrice dei dati 
-    v_html += '<tbody id="id_my_table_book">'
+    v_html += '<tbody id="id_my_table">'
     for row in matrice_dati:                    
         v_html += '<tr>'
         for field in row:

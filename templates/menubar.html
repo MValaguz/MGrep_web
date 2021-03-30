@@ -1,73 +1,85 @@
-<!-- Header barra di navigazione -->
-<header>
+<!--Barra in alto con logo, campo di ricerca e campo Info a destra-->
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <!-- Brand -->
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">
+        <img src="/static/img/icon_browser.png" alt="Logo" style="width:20px;">
+        MGrep
+    </a>
+    <!--Campo di ricerca-->
+    <input id="id_ricerca" class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <!--Campo info-->
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" href="info">Info</a>
+      </li>
+    </ul>
+</nav>
 
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-    <!-- Bottone per versione mobile -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Barra menu -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">      
-        <ul class="navbar-nav mx-auto">
-
-            <!-- Brand -->
-            <a class="navbar-brand" href="/">
-            <img src="/static/img/mgrep_logo.png" alt="Logo" style="width:100px;">
-            </a>  
-
-            <!-- Link Ricerca -->
-            <li class="nav-item">
-            <a class="nav-link" href="search_string">Search strings</a>
-            </li>
-
-            <!-- Menu oracle-->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Oracle</a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="recompiler">Invalid objects</a>
-                    <a class="dropdown-item" href="sessions_locks">Sessions Locks</a>
-                    <a class="dropdown-item" href="table_locks">Table Locks</a>
-                    <a class="dropdown-item" href="sessions_list">Sessions</a>
-                    <a class="dropdown-item" href="#">Top Sessions</a>
-                    <a class="dropdown-item" href="#">Job status</a>
-                    <a class="dropdown-item" href="#">Table space</a>
-                    <a class="dropdown-item" href="#">Table wasted</a>
-                    <a class="dropdown-item" href="#">Servers status</a>
-                    <a class="dropdown-item" href="#">Volume</a>
-                </div>
-            </li>
-
-            <!-- Menu favoriti-->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Favorites</a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Files</a>
-                    <a class="dropdown-item" href="#">Directories</a>        
-                </div>
-            </li>
-
-            <!-- Menu Tools-->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Tools</a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Import-export</a>
-                    <a class="dropdown-item" href="ascii_graphics">Ascii Graphics generator</a>        
-                    <a class="dropdown-item" href="#">Download an object from iAS12g</a>		
-                </div>
-            </li>
-
-            <!-- Rubrica -->
-            <li class="nav-item">
-            <a class="nav-link" href="books">Phone book</a>
-            </li>
-
-            <!-- Info -->
-            <li class="nav-item">
-            <a class="nav-link" href="info">Info</a>
-            </li>
-        </ul>
-    </div>
-</nav> 
-
-</header><!-- /header -->
+<!--Menù laterale a sinistra-->
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="home">
+              <i class="fa fa-home"></i>
+              Home <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="search_string">
+              <i class="fa fa-search"></i>
+              Search strings
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="books">                  
+              <i class="fa fa-phone"></i>
+              Phone book
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="recompiler">
+              <i class="fa fa-bomb"></i>
+              Invalid object
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sessions_locks">
+              <i class="fa fa-link"></i>
+              Sessions locks
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="table_locks">
+              <i class="fa fa-lock"></i>
+              Table locks
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sessions_list">                  
+              <i class="fa fa-list"></i>
+              Sessions
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="top_sessions">                  
+              <i class="fa fa-stopwatch"></i>
+              Top sessions
+            </a>
+          </li>                        
+          <li class="nav-item">
+            <a class="nav-link" href="ascii_graphics">                  
+              <i class="fa fa-palette"></i>
+              Ascii graphics generator
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="download_from_server">                  
+              <i class="fa fa-download"></i>
+              Download an object from iAS12g
+            </a>
+          </li>                          
+      </div>
+    </nav>

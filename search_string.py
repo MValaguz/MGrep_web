@@ -370,16 +370,16 @@ def ricerca_stringhe(p_form):
     """
     # controlli iniziali
     if p_form.e_stringa1.data == '' and p_form.e_stringa2.data == '':
-        return "Insert string1 or string2"
+        return "Insert string1 or string2",""
 
     if not p_form.c_flsearch.data and not p_form.c_dbsearch.data and not p_form.c_icomsearch.data:
-        return('Select execute search in Folder or DB or ICOM')
+        return('Select execute search in Folder or DB or ICOM'),""
         
     if p_form.c_flsearch.data and p_form.e_pathname.data == '':
-        return('Please enter a folder name')
+        return('Please enter a folder name'),""
 
     if p_form.c_dbsearch.data and p_form.e_dboracle1.data == '' and p_form.e_dboracle2.data == '':
-        return('Please enter a DB name')  
+        return('Please enter a DB name'),""
 
     # richiama la ricerca nel file system se presente file system                
     v_risultati = []
@@ -416,7 +416,7 @@ def ricerca_stringhe(p_form):
     v_html = ''
     if v_ok == 'Ok':        
         # intestazioni (la classe sortable funziona solo se nella pagina html si è inserito lo specifico plugin)
-        v_html  = '<div class="col text-center"><h3>Results</h3></div>'
+        v_html  = '<div <h1 class="h2">Result</h1> </div>'        
         v_html += '<table class="table table-hover sortable">'      
         v_html += '<thead> <tr> <th>Type</th> <th>Name</th> </tr> </thead>'    
                             

@@ -100,8 +100,8 @@ def ricerca_blocchi_sessioni(o_preferenze, e_server_name):
     v_cursor.close()
     v_connection.close()
 
-    # intestazioni 
-    v_html = '<table class="table table-hover">'      
+    # intestazioni     
+    v_html = '<table class="table table-hover sortable">'
     v_html += '<thead> <tr> <th>Sid</th> <th>Serial Nr.</th> <th>Username</th> <th>Terminal</th> <th>Referent</th> <th>Phone</th> <th>Location</th> <th>Program</th> <th>Object Name</th> <th style="text-align:center">Kill session</th> </tr> </thead>'    
                             
     # carico la matrice dei dati. Nel campo sid inserisco degli spazi in base al valore del campo level 

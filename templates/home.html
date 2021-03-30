@@ -1,72 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html class="no-touch" lang="en">
 
 <head>
-	<title>MGrep - Home page</title>
-	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
-	{% include 'bootstrap.html' %}
-	<!-- Stile personalizzati per il carosello-->
-	<style>
-		.carousel{
-			background: white;
-			margin-top: 20px;
-		}
-		.carousel-item{
-			text-align: center;
-			min-height: 280px; /* Prevent carousel from being distorted if for some reason image doesn't load */
-		}
-	</style>		
+    <!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
+    {% include 'bootstrap.html' %}
 </head>
 
 <body>
+    <!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->  
+    {% include 'menubar.html' %}
+    
+    <!--Main-->
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"><div style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;" class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+          
+          <!--Intestazione-->
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">Welcome to MGrep web version!</h1>            
+          </div>
+          
+          <!--Carosello immagini-->
+          <div id="myCarousel" class="carousel slide" data-ride="carousel">
+              <!-- Carousel indicators -->
+              <ol class="carousel-indicators">
+                  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                  <li data-target="#myCarousel" data-slide-to="1"></li>
+              </ol>
+              <!-- Wrapper for carousel items -->
+              <div class="carousel-inner">
+                  <div class="carousel-item active" style="text-align:center">
+                      <img src="static/img/carosello1.jpg" alt="First Slide" class="img-fluid">
+                  </div>
+                  <div class="carousel-item" style="text-align:center">
+                      <img src="static/img/carosello2.jpg" alt="Second Slide" class="img-fluid">
+                  </div>        
+              </div>
+              <!-- Carousel controls -->
+              <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+              </a>
+                <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+              </a>
+          </div>
+        
+    </main>
 
-<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
-<div>
-  {% include 'menubar.html' %}
-</div>
-
-<!--Carosello immagini-->
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Carousel indicators -->
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-    </ol>
-    <!-- Wrapper for carousel items -->
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="static/img/carosello1.jpg" alt="First Slide">
-        </div>
-        <div class="carousel-item">
-            <img src="static/img/carosello2.jpg" alt="Second Slide">
-        </div>        
-    </div>
-    <!-- Carousel controls -->
-    <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-    </a>
-    <a class="carousel-control-next" href="#myCarousel" data-slide="next">
-        <span class="carousel-control-next-icon"></span>
-    </a>
-</div>
-
-<!-- Messaggio di benvenuto -->
-<div class="container">
-	<!-- Lead presentazione -->
-	<section id="presentazione">
-	<div class="row">
-	<div class="col-sm-12">
-	 <!-- Questo è un esempio di sostituzione di codice pilotato da Python -->
-	 <h1 class="text-center"><small>{{ nome_utente }} Welcome to MGrep web version!</small></h1> 
-	</div><!-- /.col-sm-12 -->
-	</div><!-- /.row -->
-	</section><!-- /section presentazione -->
-</div><!-- /.container -->
-
-<!-- Importo tramite Flask html contenente il piede della pagina -->
-<div>
-  {% include 'footer.html' %}
-</div>
+<!-- Importo tramite Flask html contenente la parte finale della pagina -->
+{% include 'footer.html' %}
 
 </body>
 </html>

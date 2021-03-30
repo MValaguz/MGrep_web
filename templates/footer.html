@@ -1,8 +1,19 @@
-<!-- Footer delle pagine -->
-<footer class="bg-light text-center text-lg-start">
-  <!-- Copyright -->
-  <div class="text-center p-3">
-    © 2021 Ver. 2.0.0
-  </div>
-  <!-- Copyright -->
-</footer>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/static/js/jquery-3.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script src="/static/js/popper.js"></script>
+<script src="/static/js/bootstrap.js"></script>
+
+<!-- Javascript che nasconde le righe che non corrispondono alla ricerca inserita nel campo id_ricerca in cima alla pagina sulla tabella id_my_table creata da da python-->
+<script>
+  $(document).ready(function(){
+    $("#id_ricerca").on("keyup", function() {
+      var value = $(this).val().toLowerCase();      
+      $("#id_my_table tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+</script>  

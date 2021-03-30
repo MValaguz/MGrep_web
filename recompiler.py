@@ -50,8 +50,8 @@ def ricerca_oggetti_invalidi(o_preferenze, e_server_name):
     v_cursor.close()
     v_connection.close()                       
     
-    # intestazioni 
-    v_html = '<table class="table table-striped">'      
+    # intestazioni     
+    v_html = '<table class="table table-hover sortable">'
     v_html += '<thead> <tr> <th>Owner</th> <th>Object name</th> <th>Object type</th> </tr> </thead>'
                             
     # carico la matrice dei dati 

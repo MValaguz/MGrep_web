@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>MGrep - Sessions list</title>
+	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
+	{% include 'bootstrap.html' %}
+	<!-- Includo la libreria per ordinare le colonne di tabella tramite la classe "sortable" -->
+	<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+	<style> table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after { content: " \25B4\25BE" } </style>	
+</head>
+
+<body>
+
+<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+<div>
+  {% include 'menubar.html' %}
+</div>
+
+<!-- Titolo della pagina-->
+<div class="container">    
+	<div class="row">
+		<div class="col text-center">
+			<h3>List of sessions in Oracle server {{ python_totale_sessioni }}</h3>
+		</div>
+	</div>
+</div>	
+	
+<!-- Contenuti (griglia) -->
+<div class="container">				
+	<!-- Form di input dei dati-->
+	<div class="row justify-content-center">
+		<div class="col-6">					    			
+			<form method="post" class="form-horizontal">
+				 <div class="form-group row">
+					<!-- Label nome server (viene assegnata una classe boostrap)-->
+					{{ python_form.e_server_name.label(class_="col-sm-4 control-label") }}					
+					<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->
+					<div class="col-sm-4">
+						{{ python_form.e_server_name(class_="form-control") }}
+					</div>
+				</div> 						
+				<div class="form-group row">
+					<!-- Pulsante di avvio ricerca (viene assegnata una classe boostrap)-->
+					<div class="col">
+						{{ python_form.b_load_list(class_="btn btn-primary btn-block") }}
+					</div>					
+				</div>
+			</form>			
+		</div>
+	</div>
+	<!-- Barra di ricerca-->
+	<div class="row justify-content-center">
+		<div class="col-6">					    			
+			<form class="card card-sm">
+				<div class="card-body row no-gutters align-items-center">
+					<div class="col-auto">
+						<i class="fas fa-search h4 text-body"></i>
+					</div>					
+					<div class="col">
+						<input class="form-control form-control-lg form-control-borderless" type="search" id="id_ricerca" placeholder="Type here for search">
+					</div>					
+				</div>				
+			</form>			
+		</div>                        
+	</div>	
+</div>
+
+<!-- Importo tramite Flask righe caricate da Python-->	
+<div class="container-fluid">	
+	<div class="table-responsive">
+		{{ python_elenco_righe|safe }}
+	</div>    
+</div> 
+
+<!-- Importo tramite Flask html contenente il piede della pagina -->
+<div>
+  {% include 'footer.html' %}
+</div>
+
+<!-- Javascript che nasconde le righe che non corrispondono alla ricerca inserita nel campo id_ricerca agendo sulla tabella id_my_table creata da programma sessions_list.py-->
+<script>
+	$(document).ready(function(){
+	  $("#id_ricerca").on("keyup", function() {
+		var value = $(this).val().toLowerCase();
+		$("#id_my_table tr").filter(function() {
+		  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		});
+	  });
+	});
+</script>
+
+</body>
+</html>

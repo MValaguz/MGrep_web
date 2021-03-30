@@ -23,8 +23,9 @@
 #                 SET FLASK_ENV indica la modalità dell'ambiente. Settando development si è in modalità di sviluppo, per cui ogni modifica agli oggetti 
 #                 python -m flask run --host=0.0.0.0 in questo caso si potrà accedere al sito con http://10.0.47.9:5000/ (dove 10.0.47.9 è l'indirizzo ip del PC su cui gira flask)
 #
+import datetime
 from flask import Flask
-from flask import Flask, render_template, request, flash, url_for, redirect
+from flask import Flask, render_template, request, flash, url_for, redirect, send_file
 from preferenze import preferenze
 
 # Crea l'applicazione Flask
@@ -62,9 +63,9 @@ def search_string():
 	
 	# controllo se eseguire il post
 	v_tab_html = ''		
-	if request.method == 'POST':
+	if request.method == 'POST':		
 		if request.form.get('b_search'):
-			v_errore, v_tab_html = ricerca_stringhe(form)			
+			v_errore, v_tab_html = ricerca_stringhe(form)					
 		if v_errore != 'Ok':
 			flash(v_errore)	
 	# oppure caricare i default
@@ -210,6 +211,65 @@ def sessions_list():
 							python_elenco_righe=v_tab_html,
 							python_totale_sessioni=v_totale_sessioni)
 
+#---------------------------------------------------
+# Apertura della pagina che monitora occupazione DB
+#---------------------------------------------------
+@app.route('/top_sessions', methods=('GET', 'POST'))
+def top_sessions():
+	global o_top_sessions
+	global v_data_start
+	
+	# importa librerie necessarie
+	from top_sessions import form_top_sessions_class
+	from top_sessions import elenco_parametri
+	from top_sessions import oracle_top_sessions_class
+	
+	# carico la parte di form (elenco server e pulsanti), passando l'elenco dei server
+	form = form_top_sessions_class()
+	# carico elenco dei server nel relativo campo
+	form.e_server_name.choices = o_preferenze.elenco_server
+	# carico elenco dei parametri
+	form.e_parameter.choices = elenco_parametri()
+	
+	# processo il post	
+	v_tab_html = ''			
+	if request.method == 'POST':
+		e_server_name = form.e_server_name.data						
+		e_parameter = form.e_parameter.data						
+		# è stato richiesto di caricare la lista
+		if request.form.get('b_compute'):
+			# cambio titolo al pulsante
+			form.b_compute.label.text='Compute difference'
+			# controllo se o_top_sessions è già stata creata, se non lo è eseguo tutti gli step di inizializzazione
+			# che si occupano di instanziare il programma, creare il punto di partenza ed estrarre la tabella
+			if 'o_top_sessions' not in globals():
+				print('Inizializzo top sessions')
+				# mi salvo la data d'inizio per indicare all'utente il punto di start
+				v_data_start = '. Start date: ' + str(datetime.datetime.now().strftime('%H:%M:%S') )				
+				# inizializzo l'oggetto
+				o_top_sessions = oracle_top_sessions_class(o_preferenze, e_server_name, e_parameter)				
+				# eseguo lo starter (caricamento punto di partenza)
+				o_top_sessions.starter()
+				# estraggo, per la visualizzazione, il contenuto della pagina1				
+				v_tab_html = o_top_sessions.load_screen(o_top_sessions.page1)						
+			# l'inizializzazione è stata eseguita e quindi ora svolgo la differenza tra la fotografia di partenza e
+			# lo stato attuale
+			else:
+				print('Calcolo differenze top sessions')
+				# calcolo la differenza tra la pagina2 e la pagina1 e il risultato lo metto nella pagina 3
+				# la pagina1 viene constestualmente aggiornata togliendo le sessioni chiuse e inserendo quelle nuove
+				o_top_sessions.calc_differenze()
+				# estraggo, per la visualizzazione, il contenuto della pagina1
+				v_tab_html = o_top_sessions.load_screen(o_top_sessions.page1)						
+	else:
+		v_data_start = ''
+	
+	# restituisco la pagina
+	return render_template('top_sessions.html', 
+							python_form=form, 
+							python_intestazione=v_data_start,
+							python_elenco_righe=v_tab_html)
+
 #---------------------------------------	
 # Apertura della pagina di kill session
 # questa pagina riceve i seguenti parametri: nome server, sid, serial number, nome della pagina di provenienza
@@ -296,6 +356,30 @@ def ascii_graphics():
 	return render_template('ascii_graphics.html',
 							python_form=form, 
 							python_testo_convertito=v_testo_convertito)	
+
+#---------------------------------------	
+# Apertura della pagina download from server
+#---------------------------------------	
+@app.route('/download_from_server', methods=('GET', 'POST'))
+def download_from_server():
+	# importa le funzioni di servizio alla pagina
+	from download_from_server import download_from_server_class	
+	from download_from_server import execute_download_from_server
+
+	# carico la parte di form (elenco fonts e pulsanti)
+	form = download_from_server_class()
+
+	# se premuto il pulsante di conferma procedo con la conversione	
+	v_link = ''
+	if request.method == 'POST' and request.form.get('b_esegue'):		
+		v_link = execute_download_from_server(o_preferenze.v_server_password_iAS, form.e_source.data)
+		if v_link != 'Error to download!' and v_link != '':
+			return send_file(v_link, as_attachment=True)
+
+	# restituisco il rendering della pagina
+	return render_template('download_from_server.html',
+							python_form=form,
+							python_link_download=v_link)	
 
 #---------------------------------------	
 # Apertura della pagina elenco telefonico

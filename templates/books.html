@@ -2,88 +2,51 @@
 <html>
 
 <head>
-	<title>MGrep - Phone book</title>
 	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
 	{% include 'bootstrap.html' %}
-	<!-- Includo la libreria per ordinare le colonne di tabella tramite la classe "sortable" -->
-	<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
-	<style> table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after { content: " \25B4\25BE" } </style>
-	<!-- Includo la libreria per esportare i dati in excel e csv-->
-	<script src="/static/plugin/excellentexport-1.4/excellentexport.js"></script>
 </head>
 
 <body>
 
-<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
-<div>
-  {% include 'menubar.html' %}
-</div>
+	<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+  	{% include 'menubar.html' %}
 
-<!-- Titolo della pagina-->
-<div class="container">    
-	<div class="row">
-		<div class="col text-center">
-			<h3>Phone book</h3>
-		</div>
-	</div>
-</div>	
+    <!--Main-->
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"><div style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;" class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
 
-<!-- Barra di ricerca-->
-<div class="container">    
-	<div class="row justify-content-center">
-		<div class="col-12 col-md-10 col-lg-8">
-			<form class="card card-sm">
-				<div class="card-body row no-gutters align-items-center">
-					<div class="col-auto">
-						<i class="fas fa-search h4 text-body"></i>
-					</div>					
-					<div class="col">
-						<input class="form-control form-control-lg form-control-borderless" type="search" id="id_ricerca" placeholder="Type here for search">
-					</div>					
-					<!-- Pulsanti per l'export dei dati (v. id_my_table_book che è il nome della tabella creata lato Python)-->
-					<div class="btn-group">
-						<button type="button" class="btn btn-secondary"><i class="fa fa-download"></i></button>
-						<button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
-						<span class="caret"></span>
-						</button>
-						<div class="dropdown-menu">
-							<div class="dropdown-item" href="#">
-								<a download="Phone_book.xls" href="#" onclick="return ExcellentExport.excel(this, 'id_my_table_book', 'Phone book');">Export to Excel</a>
-							</div>
-							<div class="dropdown-item" href="#">
-								<a download="Phone_book.csv" href="#" onclick="return ExcellentExport.csv(this, 'id_my_table_book');">Export to CSV</a>
-							</div>
-						</div>
-					</div> 
+		<!-- Titolo della pagina-->
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">Phone book</h1>            
+			
+			<!-- Pulsanti per l'export dei dati (v. id_my_table che è il nome della tabella creata lato Python)-->
+			<div class="btn-group">
+				<button type="button" class="btn btn-secondary"><i class="fa fa-download"></i></button>
+				<button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				<div class="dropdown-menu">
+					<div class="dropdown-item" href="#">
+						<a download="Phone_book.xls" href="#" onclick="return ExcellentExport.excel(this, 'id_my_table', 'Phone book');">Excel</a>
+					</div>
+					<div class="dropdown-item" href="#">
+						<a download="Phone_book.csv" href="#" onclick="return ExcellentExport.csv(this, 'id_my_table');">CSV</a>
+					</div>
 				</div>
-			</form>			
-		</div>                        
-	</div>
-</div>
+			</div> 
+        </div>
 
-<!-- Importo tramite Flask righe della rubrica caricate da Python (viene creata una tabella dal nome id_my_table_book-->
-<div class="container-fluid">
-	<div class="table-responsive">
-		{{ python_elenco_righe|safe }}
-	</div>    
-</div>    
+		<!-- Importo tramite Flask righe della rubrica caricate da Python (viene creata una tabella dal nome id_my_table_book-->		
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+			<!-- Tabella-->
+			<div class="table-responsive">			
+				{{ python_elenco_righe|safe }}
+			</div>    
+		</div>
+		
+	</main>
 
-<!-- Importo tramite Flask html contenente il piede della pagina -->
-<div>
-  {% include 'footer.html' %}
-</div>
-
-<!-- Javascript che nasconde le righe che non corrispondono alla ricerca inserita nel campo id_ricerca agendo sulla tabella id_my_table_book creata da programma rubrica.py-->
-<script>
-$(document).ready(function(){
-  $("#id_ricerca").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#id_my_table_book tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
-});
-</script>
-
+<!-- Importo tramite Flask html contenente la parte finale della pagina -->
+{% include 'footer.html' %}
+  
 </body>
 </html>

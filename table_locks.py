@@ -63,8 +63,8 @@ def ricerca_blocchi_tabella(o_preferenze, e_server_name, e_table_name):
     v_cursor.close()
     v_connection.close()
 
-    # intestazioni 
-    v_html = '<table class="table table-hover">'      
+    # intestazioni     
+    v_html = '<table class="table table-hover sortable">'
     v_html += '<thead> <tr> <th>Sid</th> <th>Serial Nr.</th> <th>Username</th> <th>Status</th> <th>Os User</th> <th>Machine</th> <th>Program</th> <th style="text-align:center">Kill session</th> </tr> </thead>'    
                             
     # carico la matrice dei dati

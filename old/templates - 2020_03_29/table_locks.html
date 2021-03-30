@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>MGrep - Sessions locked by a table</title>
+	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
+	{% include 'bootstrap.html' %}
+</head>
+
+<body>
+
+<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+<div>
+  {% include 'menubar.html' %}
+</div>
+
+<!-- Titolo della pagina-->
+<div class="container">    
+	<div class="row">
+		<div class="col text-center">
+			<h3>List of sessions locked by a table in Oracle server</h3>
+		</div>
+	</div>
+</div>	
+	
+<!-- Contenuti (griglia) -->
+<div class="container">			
+	<!-- Questa div contiene lo spazio dove viene visualizzato un messaggio flash, di conferma-->
+	<div class="row justify-content-center">
+		{% for message in get_flashed_messages() %}		 
+		<div class="alert alert-success alert-dismissible fade show">
+			<strong>Success!</strong> {{ message }}
+			<button type="button" class="close" data-dismiss="alert">&times;</button>    
+		</div>
+		{% endfor %}
+		{% block content %} {% endblock %}
+	</div>	
+	<!-- Form di input dei dati-->
+	<div class="row justify-content-center">
+		<div class="col-6">					    			
+			<form method="post" class="form-horizontal">
+				<div class="form-group row">
+					<!-- Label nome server (viene assegnata una classe boostrap)-->
+					{{ python_form.e_server_name.label(class_="col-sm-4 control-label") }}					
+					<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->
+					<div class="col-sm-4">
+						{{ python_form.e_server_name(class_="form-control") }}
+					</div>
+				</div> 						
+				<div class="form-group row">
+					<!-- Label nome tabella (viene assegnata una classe boostrap)-->
+					{{ python_form.e_table_name.label(class_="col-sm-4 control-label") }}					
+					<!-- Lista di valori per nomi tabelle (viene assegnata una classe boostrap)-->
+					<div class="col-sm-4">
+						{{ python_form.e_table_name(class_="form-control") }}					
+					</div>
+					<!--Pulsante per il caricamento della lista tabelle (non è stato creato con wtforms perché non sono riuscito a creare pulsante submit con icona)-->					
+					<button type="submit" class="btn btn-primary btn-sm" name="b_carica_nomi_tabelle" value="click_b_carica_nomi_tabelle"><i class="fa fa-sync"></i></button>
+				</div> 						
+				<div class="form-group row">
+					<!-- Pulsante di avvio ricerca dei locks (viene assegnata una classe boostrap)-->
+					<div class="col">
+						{{ python_form.b_ricerca_blocchi(class_="btn btn-primary btn-block") }}
+					</div>					
+				</div>
+			</form>			
+		</div>
+	</div>
+</div>
+
+<!-- Importo tramite Flask righe caricate da Python-->	
+<div class="container-fluid">	
+	<div class="table-responsive">
+		{{ python_elenco_righe|safe }}
+	</div>    
+</div> 
+
+<!-- Importo tramite Flask html contenente il piede della pagina -->
+<div>
+  {% include 'footer.html' %}
+</div>
+
+</body>
+</html>

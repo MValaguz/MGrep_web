@@ -1,78 +1,89 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-	<title>MGrep - Recompiler</title>
+<head>	
 	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
 	{% include 'bootstrap.html' %}
 </head>
 
 <body>
 
-<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
-<div>
-  {% include 'menubar.html' %}
-</div>
+	<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+  	{% include 'menubar.html' %}
 
-<!-- Titolo della pagina-->
-<div class="container">    
-	<div class="row">
-		<div class="col text-center">
-			<h3>Invalid objects in Oracle server</h3>
-		</div>
-	</div>
-</div>	
-	
-<!-- Contenuti (griglia) -->
-<div class="container">			
-	<!-- Questa div contiene lo spazio dove viene visualizzato un messaggio flash, di conferma-->
-	<div class="row justify-content-center">
-		{% for message in get_flashed_messages() %}		 
-		<div class="alert alert-success alert-dismissible fade show">
-			<strong>Success!</strong> {{ message }}
-			<button type="button" class="close" data-dismiss="alert">&times;</button>    
-		</div>
-		{% endfor %}
-		{% block content %} {% endblock %}
-	</div>	
-	<!-- Form di input dei dati-->
-	<div class="row justify-content-center">
-		<div class="col-6">					    			
-			<form method="post" class="form-horizontal">
-				 <div class="form-group row">
-					<!-- Label nome server (viene assegnata una classe boostrap)-->
-					{{ python_form.e_server_name.label(class_="col-sm-4 control-label") }}					
-					<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->
-					<div class="col-sm-4">
-						{{ python_form.e_server_name(class_="form-control") }}
+	<!--Main-->
+	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"><div style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;" class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+
+		<!-- Titolo della pagina-->
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+			<h1 class="h2">Invalid objects in Oracle server</h1>            
+			<!-- Pulsanti per l'export dei dati (v. id_my_table che è il nome della tabella creata lato Python)-->
+			<div class="btn-group">
+				<button type="button" class="btn btn-secondary"><i class="fa fa-download"></i></button>
+				<button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				<div class="dropdown-menu">
+					<div class="dropdown-item" href="#">
+						<a download="Phone_book.xls" href="#" onclick="return ExcellentExport.excel(this, 'id_my_table', 'Phone book');">Excel</a>
 					</div>
-				</div> 						
-				<div class="form-group row">
-					<!-- Pulsante di ricerca oggetti invalidi (viene assegnata una classe boostrap)-->
-					<div class="col">
-						{{ python_form.b_oggetti_invalidi(class_="btn btn-secondary btn-block") }}
-					</div>
-					<!-- Pulsante di compilazione oggetti invalidi (viene assegnata una classe boostrap)-->
-					<div class="col">
-						{{ python_form.b_compila_tutto(class_="btn btn-primary btn-block") }}
+					<div class="dropdown-item" href="#">
+						<a download="Phone_book.csv" href="#" onclick="return ExcellentExport.csv(this, 'id_my_table');">CSV</a>
 					</div>
 				</div>
-			</form>			
+			</div> 
+        </div>
+		
+		<!-- Contenuti (griglia) -->
+		<div class="container">			
+			<!-- Questa div contiene lo spazio dove viene visualizzato un messaggio flash, di conferma-->
+			<div class="row justify-content-center">
+				{% for message in get_flashed_messages() %}		 
+				<div class="alert alert-success alert-dismissible fade show">
+					<strong>Success!</strong> {{ message }}
+					<button type="button" class="close" data-dismiss="alert">&times;</button>    
+				</div>
+				{% endfor %}
+				{% block content %} {% endblock %}
+			</div>	
+			<!-- Form di input dei dati-->
+			<div class="row justify-content-center">
+				<div class="col-6">					    			
+					<form method="post" class="form-horizontal">
+						<div class="form-group row">
+							<!-- Label nome server (viene assegnata una classe boostrap)-->
+							{{ python_form.e_server_name.label(class_="col-sm-4 control-label") }}					
+							<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->
+							<div class="col-sm-4">
+								{{ python_form.e_server_name(class_="form-control") }}
+							</div>
+						</div> 						
+						<div class="form-group row">
+							<!-- Pulsante di ricerca oggetti invalidi (viene assegnata una classe boostrap)-->
+							<div class="col">
+								{{ python_form.b_oggetti_invalidi(class_="btn btn-secondary btn-block") }}
+							</div>
+							<!-- Pulsante di compilazione oggetti invalidi (viene assegnata una classe boostrap)-->
+							<div class="col">
+								{{ python_form.b_compila_tutto(class_="btn btn-primary btn-block") }}
+							</div>
+						</div>
+					</form>			
+				</div>
+			</div>
 		</div>
-	</div>
-</div>
+		
+		<!-- Importo tramite Flask righe della rubrica caricate da Python (viene creata una tabella dal nome id_my_table_book-->		
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+			<!-- Tabella-->
+			<div class="table-responsive">			
+				{{ python_elenco_righe|safe }}
+			</div>    
+		</div> 
+	</main>
 
-<!-- Importo tramite Flask righe caricate da Python-->	
-<div class="container-fluid">	
-	<div class="table-responsive">
-		{{ python_elenco_righe|safe }}
-	</div>    
-</div> 
-
-<!-- Importo tramite Flask html contenente il piede della pagina -->
-<div>
-  {% include 'footer.html' %}
-</div>
+<!-- Importo tramite Flask html contenente la parte finale della pagina -->
+{% include 'footer.html' %}
 
 </body>
 </html>
