@@ -12,27 +12,14 @@
   	{% include 'menubar.html' %}
 
 	<!--Main-->
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"><div style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;" class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 
 		<!-- Titolo della pagina-->
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
             <h1 class="h2">(Under construction) Oracle top sessions{{ python_intestazione }}</h1>            
 			
 			<!-- Pulsanti per l'export dei dati (v. id_my_table che è il nome della tabella creata lato Python)-->
-			<div class="btn-group">
-				<button type="button" class="btn btn-secondary"><i class="fa fa-download"></i></button>
-				<button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
-					<span class="caret"></span>
-				</button>
-				<div class="dropdown-menu">
-					<div class="dropdown-item" href="#">
-						<a download="Phone_book.xls" href="#" onclick="return ExcellentExport.excel(this, 'id_my_table', 'Phone book');">Excel</a>
-					</div>
-					<div class="dropdown-item" href="#">
-						<a download="Phone_book.csv" href="#" onclick="return ExcellentExport.csv(this, 'id_my_table');">CSV</a>
-					</div>
-				</div>
-			</div> 
+			{% include 'botton_export_my_table.html' %}
         </div>
 	
 		<!-- Contenuti (griglia) -->

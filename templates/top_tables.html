@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>	
+	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
+	{% include 'bootstrap.html' %}
+</head>
+
+<body>
+
+	<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+  	{% include 'menubar.html' %}
+
+	<!--Main-->
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+		<!-- Titolo della pagina-->
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">Top table in Oracle Smile schema</h1>            						
+			<!-- Pulsanti per l'export dei dati (v. id_my_table che è il nome della tabella creata lato Python)-->
+			{% include 'botton_export_my_table.html' %}
+        </div>
+		
+		<!-- Contenuti (griglia) -->
+		<div class="container">						
+			<!-- Form di input dei dati-->
+			<div class="row justify-content-center">
+				<div class="col-6">					    			
+					<form method="post" class="form-horizontal">
+						<div class="form-group row">
+							<!-- Label nome server (viene assegnata una classe boostrap)-->
+							{{ python_form.e_server_name.label(class_="col-sm-4 control-label") }}					
+							<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->
+							<div class="col-sm-4">
+								{{ python_form.e_server_name(class_="form-control") }}
+							</div>
+						</div> 						
+						<div class="form-group row">
+							<!-- Pulsante di avvio ricerca (viene assegnata una classe boostrap)-->
+							<div class="col">
+								{{ python_form.b_ricerca(class_="btn btn-primary btn-block") }}
+							</div>					
+						</div>
+					</form>			
+				</div>
+			</div>
+		</div>
+
+		<!--Scritta con lo spazio totale occupato-->		
+		<div>			
+			<h6 style="text-align: center;"><br>{{ python_text_totale|safe }}</h6>            
+		</div>
+
+		<div class="container-fluid">
+			<div class="row">			
+				<!--Grafico-->
+				<div class="col-sm-3 col-md-6">
+					<canvas id="myChart" height="100%" width="100%"></canvas>
+				</div>	
+				
+				<!-- Importo tramite Flask righe caricate da Python-->	
+				<div class="col-sm-9 col-md-6">				
+					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+						<!-- Tabella-->
+						<div class="table-responsive">					
+							{{ python_elenco_righe|safe }}
+						</div>    
+					</div> 
+				</div>
+			</div>
+		</div>
+	</main>
+
+<!-- Importo tramite Flask html contenente la parte finale della pagina -->
+{% include 'footer.html' %}
+
+<!-- Grafico di tipo torta dove le etichette e i dati vengono caricati da liste provenienti da flask-python-->
+<script src="/static/js/Chart.js"></script>
+<script>
+  var ctx = document.getElementById("myChart");
+  var myChart = new Chart(ctx, {
+	type: 'doughnut',
+    data: {
+      labels: [ {{ python_top_ten_labels|safe }} ],
+      datasets: [{        
+		backgroundColor: ["#5F9EA0", "#FFD700","#F4A460","#00ff00","#FF00FF","#0000FF","#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+        data: [ {{ python_top_ten_data|safe }} ]
+      }]
+    },
+    options: {
+      title: {
+        display: false,
+        text: 'Top ten tables size'
+      },
+	  legend: {
+		  display: true,
+		  position: 'bottom'		  
+	  }
+    }
+  });
+</script>
+
+</body>
+</html>

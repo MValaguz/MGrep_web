@@ -342,6 +342,20 @@ def estrae_elenco_tabelle_sqlite(p_type,
     #Restituisco la lista
     return v_lista
 
+def table_exists_sqlite(p_cursor,
+                        p_table_name):
+    """
+       Restituisce true se la tabella indicata esiste. Il parametro p_cursor deve essere un cursore
+       aperto su un database SQLite
+    """
+    # Controllo se tabella SQLite esiste già
+    p_cursor.execute("SELECT COUNT(*) FROM sqlite_master WHERE name='" + p_table_name + "'")                                
+    # Se la tabella esiste ...
+    if p_cursor.fetchone()[0] > 0:
+        return True
+    else:
+        return False
+    
 class t_report_class():
     """
        Classe per la gestione di ut_repor in database sqlite 

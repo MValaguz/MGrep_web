@@ -16,41 +16,40 @@
 
 		<!-- Titolo della pagina-->
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-			<h1 class="h2">List of sessions in Oracle server {{ python_totale_sessioni }}</h1>            
-			
+			<h1 class="h2">Oracle table space details of {{ python_table_space_name }}</h1>            
 			<!-- Pulsanti per l'export dei dati (v. id_my_table che è il nome della tabella creata lato Python)-->
 			{% include 'botton_export_my_table.html' %}
-		</div>
+        </div>
 		
 		<!-- Contenuti (griglia) -->
-		<div class="container">				
+		<div class="container">			
 			<!-- Form di input dei dati-->
 			<div class="row justify-content-center">
 				<div class="col-6">					    			
 					<form method="post" class="form-horizontal">
 						<div class="form-group row">
-							<!-- Label nome server (viene assegnata una classe boostrap)-->
-							{{ python_form.e_server_name.label(class_="col-sm-4 control-label") }}					
-							<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->
-							<div class="col-sm-4">
-								{{ python_form.e_server_name(class_="form-control") }}
-							</div>
-						</div> 						
-						<div class="form-group row">
-							<!-- Pulsante di avvio ricerca (viene assegnata una classe boostrap)-->
+							<!-- Pulsante per la creazione dello script (viene assegnata una classe boostrap)-->
 							<div class="col">
-								{{ python_form.b_load_list(class_="btn btn-primary btn-block") }}
-							</div>					
+								{{ python_form.b_crea_script(class_="btn btn-primary btn-block") }}
+							</div>						
 						</div>
+						<div class="form-group row">
+							<!-- Label risultato (viene assegnata una classe boostrap)-->
+							{{ python_form.e_risultato.label(class_="col-sm-1 control-label") }}					
+							<!-- Campo risultato (viene assegnata una classe boostrap)-->
+							<div class="col">
+								{{ python_form.e_risultato(class_="form-control") }}
+							</div>
+						</div> 												
 					</form>			
 				</div>
-			</div>			
+			</div>
 		</div>
-
-		<!-- Importo tramite Flask righe caricate da Python-->	
+		
+		<!-- Importo tramite Flask righe della tabella da Python (viene creata una tabella dal nome id_my_table_book-->		
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
 			<!-- Tabella-->
-			<div class="table-responsive">		
+			<div class="table-responsive">			
 				{{ python_elenco_righe|safe }}
 			</div>    
 		</div> 

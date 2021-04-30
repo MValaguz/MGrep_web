@@ -4,6 +4,8 @@
 <head>	
 	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
 	{% include 'bootstrap.html' %}
+	<!-- Stile per lo spinner -->
+	<link href="/static/css/spinner.css" rel="stylesheet">	  
 </head>
 
 <body>
@@ -16,7 +18,7 @@
 
 		<!-- Titolo della pagina-->
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-			<h1 class="h2">Kill session</h1>            
+			<h1 class="h2">Do you want to {{ python_action }} {{ python_job_name }}?</h1>            
 		</div>
 
 		<!-- Contenuti (griglia) -->
@@ -34,25 +36,46 @@
 
 			<!-- Richiesta conferma di chiusura della sessione-->
 			<div class="row justify-content-center">
-				<div class="col-6">			
-					<h3 style="text-align:center">Do you want to kill the session {{ python_parametro_sid }}?</h3>
+				<div class="col-6">								
 					<form method="post" class="form-horizontal">
 						<div class="form-group row">
 							<div class="col">
 								<button type="submit" name="b_close" value="click_b_close" class="btn btn-secondary btn-block">Cancel</button>
 							</div>
 							<div class="col">	
-								<button type="submit" name="b_kill" value="click_b_kill" class="btn btn-primary btn-block">Kill</button>
+								<button type="submit" name="b_ok" value="click_b_ok" class="btn btn-primary btn-block">Ok</button>
 							</div>	
 						</div>
 					</form>														
 				</div>
 			</div>
 		</div>
+
+		<!-- Spinner di elaborazione in corso (v. definizione stile di cui sopra) e funzione collegata in fondo a questa pagina-->
+		<div id="idAttendere" style="display: none;">
+			<div class="container">    
+				<div class="row justify-content-center">		
+					<div class="loader"></div>		
+				</div>
+			</div>
+		</div>
 	
 	</main>
+
 <!-- Importo tramite Flask html contenente la parte finale della pagina -->
 {% include 'footer.html' %}
+
+<!-- Funzione per visualizzare/nascondere lo spinner di elaborazione in corso-->
+<script>
+	function Visualizza_idAttendere() {
+	  var x = document.getElementById("idAttendere");
+	  if (x.style.display === "none") {
+		x.style.display = "block";
+	  } else {
+		x.style.display = "none";
+	  }
+	}
+</script>
 
 </body>
 

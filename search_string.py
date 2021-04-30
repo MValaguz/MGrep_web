@@ -38,8 +38,6 @@ def carica_default(p_form, p_preferenze):
     """
        carica le preferenze p_preferenze nei campi di p_form
     """
-    p_form.e_stringa1.data=p_preferenze.stringa1
-    p_form.e_stringa2.data=p_preferenze.stringa2
     p_form.e_pathname.data=p_preferenze.pathname
     p_form.e_excludepath.data=p_preferenze.excludepath
     p_form.e_filter.data=p_preferenze.filter

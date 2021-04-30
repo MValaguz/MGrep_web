@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>	
+	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
+	{% include 'bootstrap.html' %}
+</head>
+
+<body>
+
+	<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+  	{% include 'menubar.html' %}
+
+	<!--Main-->
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+		<!-- Titolo della pagina-->
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">Changelog</h1>            
+        </div>
+		
+		<!--Changelog-->
+		<p> 
+		<ul>
+			<li>v1.6: Table wasted permette di verificare lo spazio occulto occupato dalle tabelle.</li>
+			<li>v1.5a:Possibilità di stoppare e rilanciare un job.</li>
+			<li>v1.5: Prima versione beta del tool OracleMySql.</li>
+			<li>v1.5: Rivisto il tool per importare dati in oracle partendo da foglio excel, sostituendo la libreria di lettura dei file perché risultata inefficiente.</li>
+			<li>v1.4b:Nel tool di import-export inserita possibilità di indicare un utente </li>
+			<li>v1.4: Nuovo tool "Servers Status" </li>
+			<li>v1.3: Nuovo tool "Oracle tablespace" </li>
+			<li>v1.2: Nuovo tool "Oracle Top Sessions" versione BETA</li>	    
+			<li>v1.1: Nel tool dei job inserito ricerca per "nome job" e colonne di durata del job</li>	    
+			<li>v1.0a: Nel tool di ricerca sessioni, inserito conteggio totale degli utenti collegati</li>	    
+			<li>v1.0:  Conversione del programma SmiGrep con librerie WX a MGrep con librerie QT</li>	    
+		</ul>	
+		</p>
+    
+		<hr> <!-- Riga di separazione --></hr>
+	
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">Help</h1>            
+        </div>
+	
+		<h5> Search string </h5>	
+		<p>Se presenti string1 e string2 la ricerca, viene effettuata in modalità AND per tutto il file o l'oggetto DB.<br>
+		E' possibile indicare se si desidera effettuare la ricerca nel file system oppure nel data base (solo Oracle è supportato).<br> 
+		Per la ricerca nel data base è possibile indicare una doppia scelta e tra gli oggetti scansionati verrà letto anche il contenuto della tabella UT_LOV.<br>
+		I filtri valgono solo per i files ricercati nel file system e se più di uno, devono venire elencati separati da una virgola come ad esempio: .rdf,.fmb,.sql<br>
+		Laddove non serve che venga percorsa una directory (o più), si può inserire elenco nel campo "Exclude directories"; il programma escludera la directory ovunque essa è presente 
+		nell'albero.<br>
+		Per natura dei files system lo stesso nome di directory può essere presente in rami diversi; l'esclusione eliminerà la directory indicata da tutti i rami!<br>
+		Specificare file di output dove scrivere i risultati in formato csv. I risultati vengono anche riportati a video dove con doppio click è possibile aprire i file, oggetti del DB compresi.<br>
+		<br>
+		Alcune note (ICOM-SMILE):<br>
+		La ricerca nei sorgenti di ICOM-UNIFACE va valutata in quanto in uniface, package presenti nel DB di SMILE potrebbero essere usati da ICOM-UNIFACE ma tramite alias. <br>
+		In questo caso non si otterebbe alcun risultato!
+		</p>   
+		
+		<h5> Search file </h5>
+		<p>Indicare il file o parte del file da ricercare.<br>
+		Indicare eventuali directory da escludere dalla ricerca e eventuali filtri da considerare sui suffissi dei file.<br>
+		La check "Clear cache files system" se impostata indica alla ricerca che andrà letto il file  system per caricare la lista dei files, altrimenti la ricerca sarà eseguita direttamente in cache.<br>
+		Con doppio click sull'oggetto posso aprirlo. <br>
+		Posso portare il file nella sezioni dei preferiti per poterlo riaprire in seguito o compilare.
+		</p>
+		
+		<h5> My favorites files </h5>
+		<p>Da questa sezione è possibile creare una lista di files preferiti; la lista può essere alimentata dai tab precedenti, oppure prendendo un file da file-system tramite drag&drop.<br>
+		Con doppio click si apre l'oggetto.
+		Esistono azioni riferite alla lista:
+		<ul>
+				<li>Cancellazione riga (deve poi essere salvata)</li>
+				<li>Pulizia della lista</li>
+				<li>Salvataggio della lista </li>
+		</ul>
+			Azioni riferite all'oggetto:
+		<ul>
+				<li>Apertura della cartella in cui è presente l'oggetto</li>
+				<li>Backup dell'oggetto. L'oggetto viene copiato all'interno di un file zip "old.zip" presente nella stessa cartella (se non esiste lo crea) mettendo come suffisso la data di sistema. Se nel file Old.zip esistono già dei files non vengono persi, in quanto la procedura va in accodamento.</li>
+				<li>Messa in linea di un oggetto Oracle Forms o Oracle Report. In questo caso l'oggetto vienecopiato e compilato sui server di destinazione. Lo schema di riferimento è SMILE.</li>
+				<li>Compilazione oggetto Oracle Forms o Oracle Report. L'oggetto viene compilato nei server di sviluppo di SMILE.</li>
+		</ul> 	    
+		</p>
+		
+		<h5> My favorites directories </h5>
+		<p>Da questa sezione è possibile compilare un elenco di directories preferite; la lista si alimenta tramite drag and drop da file system.
+		Con doppio click si apre la cartella, mentre con i pulsanti in cima si gestisce la lista.
+		</p>
+		
+		<h5> Import-Export tools </h5>
+		<p>Questa sezione è nata per permettere di effettuare il salvataggio di tabelle, sopratutto per quelle tabelle che contengono campi BLOB.<br>
+		Questa sezione permette di prendere una tabella da un DB Oracle e copiarla dentro un DB SQLite che risiede sul PC. Essa può essere successivamente ripresa e riportata su DB Oracle (la tabella di destinazione non deve esistere). 
+		Eventuali campi BLOB non vengono salvati all'interno del DB SQLite (il cui limite sarebbe comunque di 1MB di spazio) ma direttamente in una cartella di filesystem. Da questa stessa tabella, la funzione di import dentro Oracle, attingerà gli allegati ricostruendo la struttura di partenza.
+		</p>
+		
+		<h5> Oracle Tools </h5>
+		<p>Oracle recompiler: è possibile visualizzare gli oggetti invalidi presenti sul database e ricompilarli.<br>
+		Oracle locks:
+		<ul>
+				<li>check sessions lock: visualizza le sessioni in blocco</li>
+				<li>check table lock: avendo una tabella in input indica quali sessioni la stanno bloccando</li>
+		</ul>	
+		Oracle sessions:<br>
+		<ul>
+				<li>è possibile visualizzare tutte le sessioni aperte a DB e filtrare tramite ricerca utente.</li>
+		</ul>
+		</p>
+		
+		<h5> Alcune note </h5>
+		<p>Tutti i dati inseriti vengono salvati per essere poi ripresi alla successiva apertura del programma.<br>
+		La cartella di lavoro del programma è C:\MGrep!<br>
+		Sugli elenchi dei file e delle directory preferite è possibile inserire file del filesystem tramite la funzione drag&drop.
+		</p>
+		
+	</main>
+
+<!-- Importo tramite Flask html contenente la parte finale della pagina -->
+{% include 'footer.html' %}		
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+<head>	
 	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
 	{% include 'bootstrap.html' %}
 </head>
@@ -9,31 +9,28 @@
 <body>
 
 	<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
-  	{% include 'menubar.html' %}
+	{% include 'menubar.html' %}
 
-    <!--Main-->
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+	<!--Main-->
+	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 
 		<!-- Titolo della pagina-->
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h2">Phone book</h1>            
-			
-			<!-- Pulsanti per l'export dei dati (v. id_my_table che è il nome della tabella creata lato Python)-->
-			{% include 'botton_export_my_table.html' %}
-        </div>
+			<h1 class="h2">History of job {{ python_job_name }}</h1>            
+		</div>
 
-		<!-- Importo tramite Flask righe della rubrica caricate da Python (viene creata una tabella dal nome id_my_table_book-->		
+		<!-- Importo tramite Flask righe caricate da Python-->	
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
 			<!-- Tabella-->
-			<div class="table-responsive">			
+			<div class="table-responsive">					
 				{{ python_elenco_righe|safe }}
 			</div>    
-		</div>
-		
+		</div> 
+	
 	</main>
-
 <!-- Importo tramite Flask html contenente la parte finale della pagina -->
 {% include 'footer.html' %}
-  
+
 </body>
+
 </html>

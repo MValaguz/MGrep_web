@@ -24,3 +24,12 @@ def file_in_directory(p_node):
             v_file.append(v_dir_name + '\\' + v_file_name)        
     # restituosco la tupla con l'elenco
     return v_file
+
+def delete_files_in_dir(p_dir):
+    """
+       Elimina tutti i files della directory p_dir
+    """
+    for files in os.listdir(p_dir):        
+        os.remove(files)
+
+delete_files_in_dir('temp\\ta_files')        

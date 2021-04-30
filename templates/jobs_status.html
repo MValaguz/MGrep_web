@@ -4,6 +4,8 @@
 <head>	
 	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
 	{% include 'bootstrap.html' %}
+	<!-- Stile che serve allo spinner-->
+	<link href="/static/css/spinner.css" rel="stylesheet">	  
 </head>
 
 <body>
@@ -16,11 +18,20 @@
 
 		<!-- Titolo della pagina-->
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h2">List of sessions locked by a table in Oracle server</h1>            
+            <h1 class="h2">List of jobs in Oracle server</h1>            
 			
 			<!-- Pulsanti per l'export dei dati (v. id_my_table che è il nome della tabella creata lato Python)-->
 			{% include 'botton_export_my_table.html' %}
         </div>
+
+		<!-- Spinner di elaborazione in corso (v. definizione stile di cui sopra) e funzione collegata in fondo a questa pagina-->
+		<div id="idAttendere" style="display: none;">
+			<div class="container">    
+				<div class="row justify-content-center">		
+					<div class="loader"></div>		
+				</div>
+			</div>
+		</div>
 	
 		<!-- Contenuti (griglia) -->
 		<div class="container">			
@@ -47,19 +58,17 @@
 							</div>
 						</div> 						
 						<div class="form-group row">
-							<!-- Label nome tabella (viene assegnata una classe boostrap)-->
-							{{ python_form.e_table_name.label(class_="col-sm-4 control-label") }}					
-							<!-- Lista di valori per nomi tabelle (viene assegnata una classe boostrap)-->
+							<!-- Label check box per selezionare job disabilitati (viene assegnata una classe boostrap)-->
+							{{ python_form.c_enable.label(class_="col-sm-4 control-label") }}					
+							<!-- Check box per selezionare job disabilitati (viene assegnata una classe boostrap)-->
 							<div class="col-sm-4">
-								{{ python_form.e_table_name(class_="form-control") }}					
+								{{ python_form.c_enable(class_="form-control") }}					
 							</div>
-							<!--Pulsante per il caricamento della lista tabelle (non è stato creato con wtforms perché non sono riuscito a creare pulsante submit con icona)-->					
-							<button type="submit" class="btn btn-primary btn-sm" name="b_carica_nomi_tabelle" value="click_b_carica_nomi_tabelle"><i class="fa fa-sync"></i></button>
 						</div> 						
 						<div class="form-group row">
-							<!-- Pulsante di avvio ricerca dei locks (viene assegnata una classe boostrap)-->
+							<!-- Pulsante di avvio ricerca (viene assegnata una classe boostrap)-->
 							<div class="col">
-								{{ python_form.b_ricerca_blocchi(class_="btn btn-primary btn-block") }}
+								{{ python_form.b_ricerca_jobs(class_="btn btn-primary btn-block", onclick="Visualizza_idAttendere()") }}
 							</div>					
 						</div>
 					</form>			
@@ -78,6 +87,18 @@
 
 <!-- Importo tramite Flask html contenente la parte finale della pagina -->
 {% include 'footer.html' %}
+
+<!-- Funzione per visualizzare/nascondere lo spinner di elaborazione in corso-->
+<script>
+	function Visualizza_idAttendere() {
+	  var x = document.getElementById("idAttendere");
+	  if (x.style.display === "none") {
+		x.style.display = "block";
+	  } else {
+		x.style.display = "none";
+	  }
+	}
+</script>
 
 </body>
 </html>

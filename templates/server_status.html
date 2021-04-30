@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>	
+	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
+	{% include 'bootstrap.html' %}
+    <!-- Stile che serve allo spinner-->
+	<link href="/static/css/spinner.css" rel="stylesheet">	  
+</head>
+
+<body>
+
+	<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+  	{% include 'menubar.html' %}
+
+	<!--Main-->
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+		<!-- Titolo della pagina-->
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">Linux server status</h1>            			                        
+            <!--Form-->
+            <form method="post">
+                <!--Pulsanti-->
+                <div class="btn-group">
+                    <!--Pulsante per caricamento utilizzo disco-->					
+                    <button type="submit" onclick="Visualizza_idAttendere()" title="Show disc usage for all server" class="btn btn-primary btn-sm" name="b_disc_usage" value="click_b_disc_usage"><i class="fa fa-compact-disc"></i></button>
+                    <!--Pulsante per situazione log di database-->					
+                    <button type="submit" onclick="Visualizza_idAttendere()" title="Show folder ora02" class="btn btn-primary btn-sm" name="b_ora02" value="click_b_ora02"><i class="fa fa-file-archive"></i></button>
+                    <!--Pulsante per situazione cpu-->					
+                    <button type="submit" onclick="Visualizza_idAttendere()" title="Show the output for 'top' command" class="btn btn-primary btn-sm" name="b_cpu" value="click_b_cpu"><i class="fa fa-microchip"></i></button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Spinner di elaborazione in corso (v. definizione stile di cui sopra) e funzione collegata in fondo a questa pagina-->
+		<div id="idAttendere" style="display: none;">
+			<div class="container">    
+				<div class="row justify-content-center">		
+					<div class="loader"></div>		
+				</div>
+			</div>
+		</div>
+
+        <!-- Risultati-->
+		<div class="row">
+			<div class="col">				
+                <div class="row">
+					<div class="form-group" style="width: 50%;">
+						<label for="risultato1">ICOM_815 (Database)</label>
+				    	<textarea class="form-control" id="risultato1" name="risultato1" rows=10 style = "font-family:'Courier New', monospace;font-size:12px;">{{ python_text1 }}</textarea>		
+					</div>
+					<div class="form-group" style="width: 50%;">
+						<label for="risultato2">iAS SMILE REALE</label>
+                    	<textarea class="form-control" id="risultato2" name="risultato2" rows=10 style = "font-family:'Courier New', monospace;font-size:12px;">{{ python_text2 }}</textarea>		
+					</div>
+                </div>
+			    <div class="row">
+					<div class="form-group" style="width: 50%;">
+						<label for="risultato3">BACKUP_815 (Database)</label>
+				    	<textarea class="form-control" id="risultato3" name="risultato3" rows=10 style = "font-family:'Courier New', monospace;font-size:12px;">{{ python_text3 }}</textarea>		            
+					</div>
+				    <div class="form-group" style="width: 50%;">
+						<label for="risultato4">iAS SMILE BACKUP</label>
+						<textarea class="form-control" name="risultato4" name="risultato4" rows=10 style = "font-family:'Courier New', monospace;font-size:12px;">{{ python_text4 }}</textarea>		
+					</div>
+                </div>
+			    <div class="row">
+					<div class="form-group" style="width: 50%;">
+						<label for="risultato5">BACKUP_2_815 (Database)</label>
+				    	<textarea class="form-control" name="risultato5" name="risultato5" rows=10 style = "font-family:'Courier New', monospace;font-size:12px;">{{ python_text5 }}</textarea>		            
+					</div>
+					<div class="form-group" style="width: 50%;">
+						<label for="risultato6">iAS SMILE BACKUP_2</label>
+				    	<textarea class="form-control" name="risultato6" name="risultato6" rows=10 style = "font-family:'Courier New', monospace;font-size:12px;">{{ python_text6 }}</textarea>		
+					</div>
+                </div>
+			</div>
+		</div>
+
+	</main>
+
+<!-- Importo tramite Flask html contenente la parte finale della pagina -->
+{% include 'footer.html' %}
+
+<!-- Funzione per visualizzare/nascondere lo spinner di elaborazione in corso-->
+<script>
+	function Visualizza_idAttendere() {
+	  var x = document.getElementById("idAttendere");
+	  if (x.style.display === "none") {
+		x.style.display = "block";
+	  } else {
+		x.style.display = "none";
+	  }
+	}
+</script>
+
+</body>
+</html>
