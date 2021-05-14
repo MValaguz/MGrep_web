@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>	
+	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
+	{% include 'bootstrap.html' %}
+	<!-- Stile che serve allo spinner-->
+	<link href="/static/css/spinner.css" rel="stylesheet">	  
+	<!-- Sorgenti per la gestione delle combobox-->
+	<link href="/static/plugin/Bootstrap-Combo-Box-Typeahead-Plugin-jQuery/css/bootstrap-combobox.css" rel="stylesheet">
+</head>
+
+<body>
+
+	<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+  	{% include 'menubar.html' %}
+
+	<!--Main-->
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+		<!-- Titolo della pagina-->
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">Import-export</h1>            
+        </div>
+
+		<!-- Spinner di elaborazione in corso (v. definizione stile di cui sopra) e funzione collegata in fondo a questa pagina-->
+		<div id="idAttendere" style="display: none;">
+			<div class="container">    
+				<div class="row justify-content-center">		
+					<div class="loader"></div>		
+				</div>
+			</div>
+		</div>
+
+		<!-- Zona dedicata ai messaggi-->
+		{% include 'message.html' %}
+
+		<!-- Se voglio che la post mi invii tutti i campi a flask, devo racchiuderli tutti nello stessa sezione form-->
+		<form method="post" class="form-inline">
+	
+			<!-- Campi di intestazione -->
+			<div class="container">							
+				<!-- Intestazione -->
+				<div class="row">
+					<div class="form-group mb-2">
+						<!-- Label nome server (viene assegnata una classe boostrap)-->
+						{{ python_form.e_server_name.label(class_="col-form-label") }}
+						<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_server_name(class_="form-control") }}							
+					</div>
+					<div class="form-group mx-sm-3 mb-2">
+						<!-- Label nome schema (viene assegnata una classe boostrap)-->
+						{{ python_form.e_schema.label(class_="col-form-label") }}					
+						<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_schema(class_="form-control") }}							
+					</div> 						
+					<div class="form-group mx-sm-3 mb-2">
+						<!-- Label nome sqlite db (viene assegnata una classe boostrap)-->
+						{{ python_form.e_sqlite.label(class_="col-form-label") }}					
+						<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_sqlite(class_="form-control") }}							
+					</div> 			
+				</div>						
+			</div>
+		
+			<!-- Campi della sezione "Copy an Oracle table into a SQLite DB"-->					
+			<div class="row">
+				<h5>Copy an Oracle table into a SQLite DB</h5>
+			</div>
+			<div class="row">				
+				<div class="form-group mb-2">
+					<!-- Label nome tabella (viene assegnata una classe boostrap)-->
+					{{ python_form.e_from_oracle_table.label(class_="col-form-label") }}
+					<!-- Campo nome tabella (viene assegnata una classe boostrap)-->							
+					<select {{ python_form.e_from_oracle_table(class_="combobox form-control") }}>
+					{{python_tabelle_oracle|safe }}
+					</select>
+				</div>							
+				<div class="form-group mx-sm-3 mb-2">
+					<!--Pulsante per il caricamento della lista tabelle (non è stato creato con wtforms perché non sono riuscito a creare pulsante submit con icona)-->					
+					<button type="submit" class="btn btn-primary btn-sm" name="b_carica_tabelle_oracle" value="click_b_carica_tabelle_oracle"><i class="fa fa-sync"></i></button>							
+				</div> 						
+				<div class="row">					
+					<div class="form-group mb-2">
+						<!-- Label condizione where (viene assegnata una classe boostrap)-->
+						{{ python_form.e_oracle_where.label(class_="col-form-label") }}					
+						<!-- Campo condizione where (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_oracle_where(class_="form-control") }}							
+					</div> 						
+					<div class="form-group mx-sm-3 mb-2">
+						<!-- Pulsante per copiare la tabella oracle dentro sqlite (viene assegnata una classe boostrap)-->							
+						{{ python_form.b_copy_from_oracle_to_sqlite(class_="btn btn-primary btn-block", onclick="Visualizza_idAttendere()") }}							
+					</div> 							
+				</div>				
+			</div>		
+
+			<!-- Campi della sezione "SQLite table utility"-->							
+			<div class="row">
+				<h5>SQLite table utility</h5>
+			</div>
+			<div class="row">			
+				<div class="form-group mb-2">
+					<!-- Label nome tabella (viene assegnata una classe boostrap)-->
+					{{ python_form.e_sqlite_table_name.label(class_="col-form-label") }}
+					<!-- Campo nome tabella (viene assegnata una classe boostrap)-->							
+					<select {{ python_form.e_sqlite_table_name(class_="combobox form-control") }}>
+					{{python_tabelle_sqlite|safe }}	
+					</select>						
+				</div>									
+			
+				<div class="form-group mx-sm-3 mb-2">
+					<!--Pulsante per il caricamento della lista tabelle (non è stato creato con wtforms perché non sono riuscito a creare pulsante submit con icona)-->					
+					<button type="submit" class="btn btn-primary btn-sm" name="b_carica_tabelle_sqlite" value="click_b_carica_tabelle_sqlite"><i class="fa fa-sync"></i></button>							
+				</div> 						
+							
+				<div class="form-group mx-sm-3 mb-2">
+					<!-- Pulsante per visualizzare i dati della tabella sqlite (viene assegnata una classe boostrap)-->							
+					{{ python_form.b_sqlite_table_view(class_="btn btn-primary btn-block", onclick="Visualizza_idAttendere()") }}							
+				</div> 						
+				<div class="form-group mx-sm-3 mb-2">
+					<!-- Pulsante per copiare i dati da tabella sqlite in foglio excel (viene assegnata una classe boostrap)-->							
+					{{ python_form.b_sqlite_table_to_excel(class_="btn btn-primary btn-block", onclick="Visualizza_idAttendere()") }}							
+				</div> 											
+			</div>		
+		</form>
+	</main>
+
+<!-- Importo tramite Flask html contenente la parte finale della pagina -->
+{% include 'footer.html' %}
+
+<!-- Funzione per visualizzare/nascondere lo spinner di elaborazione in corso-->
+<script>
+	function Visualizza_idAttendere() {
+	  var x = document.getElementById("idAttendere");
+	  if (x.style.display === "none") {
+		x.style.display = "block";
+	  } else {
+		x.style.display = "none";
+	  }
+	}
+</script>
+
+<!--Libreria e script per il funzionamento delle combobox-->
+<script src="/static/plugin/Bootstrap-Combo-Box-Typeahead-Plugin-jQuery/js/bootstrap-combobox.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+	  $('.combobox').combobox();
+	});
+</script>
+
+</body>
+</html>

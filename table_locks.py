@@ -13,15 +13,14 @@ import sys
 import cx_Oracle
 # Importa librerie per creazione form
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextField, IntegerField, TextAreaField, SubmitField, RadioField, SelectField
-from wtforms import validators, ValidationError
+from wtforms import TextField, SubmitField, SelectField
 
 class table_locks_class(FlaskForm):
     """
         classe per creazione campi all'interno dell'html
     """	
     e_server_name = SelectField('Oracle name server:')
-    e_table_name = SelectField('Table name:')        
+    e_table_name = TextField('Table name:')        
     b_ricerca_blocchi = SubmitField("Check sessions locks")	    
        
 def ricerca_blocchi_tabella(o_preferenze, e_server_name, e_table_name):

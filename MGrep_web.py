@@ -26,7 +26,7 @@
 import datetime
 import os
 from flask import Flask
-from flask import Flask, render_template, request, flash, url_for, redirect, send_file
+from flask import Flask, render_template, request, flash, url_for, redirect, send_file, jsonify
 from preferenze import preferenze
 
 # Crea l'applicazione Flask
@@ -82,18 +82,22 @@ def search_string():
 @app.route('/import_export', methods=('GET', 'POST'))
 def import_export():
 	from import_export import import_export_class
-	from import_export import copy_table_oracle_to_sqlite
+	from import_export import copy_table_oracle_to_sqlite	
 	
 	# creo la parte di form 
 	form = import_export_class()	
 
 	# carico elenco dei server nel relativo campo
 	form.e_server_name.choices = o_preferenze.elenco_server
+
+	# dichiarazione variabili
+	v_tabelle_oracle = []
+	v_tabelle_sqlite = []
 	
 	# controllo se eseguire il post	
-	if request.method == 'POST':
-		if request.form.get('b_copy_from_oracle_to_sqlite'):
-			# lancio la copia da tabella oracle a tabella sqlite
+	if request.method == 'POST':		
+		# lancio la copia da tabella oracle a tabella sqlite
+		if request.form.get('b_copy_from_oracle_to_sqlite'):			
 			v_ok, v_message = copy_table_oracle_to_sqlite(form.e_schema.data,
                                                           form.e_schema.data,
                                                           form.e_server_name.data,
@@ -106,14 +110,42 @@ def import_export():
 			if v_ok == 'ko':
 				flash(v_message,"danger")
 			else:
-				flash(v_message,"info")
+				flash(v_message,"success")
+				
 	# carico le preferenze
-	else:
+	else:				
 		# carico nome database sqlite di default
-		form.e_sqlite.data = o_preferenze.sqlite_db
+		form.e_sqlite.data = o_preferenze.sqlite_db				
 	
+	# render della pagina
 	return render_template('import_export.html',
-							python_form=form)
+							python_form=form,
+							python_tabelle_oracle=v_tabelle_oracle,
+							python_tabelle_sqlite=v_tabelle_sqlite)
+
+#------------------------------------------------------------
+# Funzione di supporto per l'apertura della pagina modale di 
+# elenco delle tabelle oracle (Lista valori tabelle oracle)
+#------------------------------------------------------------
+@app.route('/LOVTabelleOracle', methods=['GET'])
+def LOVTabelleOracle():
+	from utilita_database import html_elenco_tabelle_oracle
+	
+	# carico elenco delle tabelle di oracle per la modal LOV leggendo in input i parametri indicati
+	v_tabelle_oracle = html_elenco_tabelle_oracle(request.args.get("schema_name"), request.args.get("server_name"))			
+	return jsonify(risultato=v_tabelle_oracle)
+
+#------------------------------------------------------------
+# Funzione di supporto per l'apertura della pagina modale di 
+# elenco delle tabelle sqlite (Lista valori tabelle sqlite)
+#------------------------------------------------------------
+@app.route('/LOVTabelleSQLite', methods=['GET'])
+def LOVTabelleSQLite():
+	from utilita_database import html_elenco_tabelle_sqlite
+	
+	# carico elenco delle tabelle di sqlite per la modal LOV leggendo in input i parametri indicati
+	v_tabelle_sqlite = html_elenco_tabelle_sqlite( os.path.normpath('temp\\'+request.args.get("sqlite_db_name")) )
+	return jsonify(risultato=v_tabelle_sqlite)
 
 #---------------------------------------	
 # Apertura della pagina di recompiler
@@ -203,11 +235,6 @@ def table_locks():
 		e_server_name = form.e_server_name.data		
 		e_table_name = form.e_table_name.data
 		
-		# è stato premuto il pulsante per caricare elenco delle tabelle 
-		if request.form.get('b_carica_nomi_tabelle')=='click_b_carica_nomi_tabelle':
-			v_elenco_tabelle = estrae_elenco_tabelle_oracle( '1','SMILE','SMILE',form.e_server_name.data ) 
-			form.e_table_name.choices = v_elenco_tabelle
-	
 		# è stato richiesto di visualizzare gli oggetti invalidi
 		if request.form.get('b_ricerca_blocchi'):
 			if e_table_name != None:				

@@ -30,6 +30,4 @@ def delete_files_in_dir(p_dir):
        Elimina tutti i files della directory p_dir
     """
     for files in os.listdir(p_dir):        
-        os.remove(files)
-
-delete_files_in_dir('temp\\ta_files')        
+        os.remove(p_dir + '\\' + files)

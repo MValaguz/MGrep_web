@@ -15,10 +15,14 @@ import cx_Oracle
 import sqlite3 
 # Importa librerie per creazione form
 from flask_wtf import FlaskForm
-from wtforms import TextField, TextAreaField, SubmitField, SelectField
+from wtforms import StringField, TextField, IntegerField, TextAreaField, SubmitField, RadioField, SelectField
+from wtforms import validators, ValidationError
 # Moduli di progetto
 from utilita_database import estrae_struttura_tabella_oracle
+from utilita_database import estrae_struttura_tabella_sqlite 
 from utilita_database import table_exists_sqlite
+from utilita_database import estrae_elenco_tabelle_sqlite
+from utilita_database import estrae_elenco_tabelle_oracle
 from utilita import delete_files_in_dir
 
 class import_export_class(FlaskForm):
@@ -32,7 +36,7 @@ class import_export_class(FlaskForm):
 
     # Campi della sezione "Copy an Oracle table into a SQLite DB"
     e_from_oracle_table = TextField('Table name:') 
-    e_oracle_where = TextAreaField('Where condition:')
+    e_oracle_where = TextField('Where condition:')
     b_copy_from_oracle_to_sqlite = SubmitField('Copy table from Oracle DB to SQLite:')
 
     # Campi della sezione "SQLite table utility"
@@ -203,6 +207,28 @@ def copy_table_oracle_to_sqlite(v_user_db,
     if v_message_info != '':
         v_return_message += ". Notice! " + v_message_info
     return "ok", v_return_message
+
+def html_elenco_tabelle_sqlite(p_nome_sqlitedb):
+    """
+       Restituisce <option> per caricare una combobox con elenco delle tabelle sqlite 
+    """                                
+    # carico la matrice dei dati    
+    v_html = '<option></option>'          
+    for row in estrae_elenco_tabelle_sqlite('1', p_nome_sqlitedb):                            
+        v_html += '<option value="' + str(row) + '">' + str(row) +'</option>'        
+    
+    return v_html                
+
+def html_elenco_tabelle_oracle(p_user, p_server):
+    """
+       Restituisce <option> per caricare una combobox con elenco delle tabelle oracle
+    """                            
+    # carico la matrice dei dati
+    v_html = '<option></option>'          
+    for row in estrae_elenco_tabelle_oracle( '1', p_user, p_user, p_server ):                    
+        v_html += '<option value="' + str(row) + '">' + str(row) +'</option>'                
+    
+    return v_html                
     
 # ------------------------
 # test 
@@ -219,3 +245,11 @@ if __name__ == "__main__":
                                        True)
     print(v_ok)                  
     """
+
+    """
+    #estrae elenco tabelle db sqlite
+    print(html_elenco_tabelle_sqlite(os.path.normpath('temp\\'+'TEST.db')))
+    """
+    
+    #estrae elenco tabelle db oracle
+    print(html_elenco_tabelle_oracle('SMILE','BACKUP_815'))

@@ -1,0 +1,17 @@
+<!-- Sezione dedicata ai messaggi tramite flash
+     usare flash(v_message,'danger')
+     usare flash(v_message,'success')
+     usare flash(v_message,'info')
+-->
+<div class="row justify-content-center">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}				    
+            <div class="alert alert-{{ messages.0.0 }} alert-dismissible fade show">
+                  {% for category, message in messages %}
+                    {{ message }} </br>
+                  {% endfor %}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>    
+            </div>
+          {% endif %}
+    {% endwith %}
+</div>
