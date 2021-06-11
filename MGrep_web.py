@@ -12,7 +12,7 @@
  Descrizione...: Questa è la versione web di MGrep!
 """
 
-# Pacchetti da installare
+# Pacchetti principali da installare
 # pip install Flask
 # pip install cx_oracle==5.3 
 # pip install WTForms==2.3.3
@@ -25,7 +25,6 @@
 #
 import datetime
 import os
-from flask import Flask
 from flask import Flask, render_template, request, flash, url_for, redirect, send_file, jsonify
 from preferenze import preferenze
 
@@ -33,6 +32,11 @@ from preferenze import preferenze
 app = Flask(__name__)
 # Stacco una secret key che serve alla funzione flash
 app.config['SECRET_KEY'] = '013579'
+
+# Preferenze per l'upload di files (utilizzato ad esempio nella sezione import-export)
+UPLOAD_FOLDER = os.path.normpath('temp\\upload')
+ALLOWED_EXTENSIONS = {'xlsx'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # carico le preferenze
 o_preferenze = preferenze()    
@@ -45,9 +49,8 @@ v_elenco_tabelle = ['']
 # Apertura della pagina principale 
 #---------------------------------------	
 @app.route('/')
-def home():    
-    v_nome_utente = 'Hi!'
-    return render_template('home.html', nome_utente=v_nome_utente)	
+def home():        
+    return render_template('home.html')	
 
 #---------------------------------------	
 # Apertura della pagina ricerca stringa
@@ -76,24 +79,20 @@ def search_string():
 							python_form=form,
 							python_elenco_righe=v_tab_html)
 
-#---------------------------------------	
-# Apertura della pagina import-export
-#---------------------------------------	
-@app.route('/import_export', methods=('GET', 'POST'))
-def import_export():
-	from import_export import import_export_class
-	from import_export import copy_table_oracle_to_sqlite	
+#--------------------------------------------------------
+# Apertura della pagina import-export "Oracle to SQLite"
+#--------------------------------------------------------
+@app.route('/import_export_oracle_to_sqlite', methods=('GET', 'POST'))
+def import_export_oracle_to_sqlite():
+	from import_export_oracle_to_sqlite import import_export_oracle_to_sqlite_class
+	from import_export_oracle_to_sqlite import copy_table_oracle_to_sqlite	
 	
 	# creo la parte di form 
-	form = import_export_class()	
+	form = import_export_oracle_to_sqlite_class()	
 
 	# carico elenco dei server nel relativo campo
 	form.e_server_name.choices = o_preferenze.elenco_server
 
-	# dichiarazione variabili
-	v_tabelle_oracle = []
-	v_tabelle_sqlite = []
-	
 	# controllo se eseguire il post	
 	if request.method == 'POST':		
 		# lancio la copia da tabella oracle a tabella sqlite
@@ -111,6 +110,41 @@ def import_export():
 				flash(v_message,"danger")
 			else:
 				flash(v_message,"success")
+						
+	# carico le preferenze
+	else:				
+		# carico nome database sqlite di default
+		form.e_sqlite.data = o_preferenze.sqlite_db				
+	
+	# render della pagina
+	return render_template('import_export_oracle_to_sqlite.html',
+							python_form=form)
+
+#------------------------------------------------------
+# Apertura della pagina import-export "SQLite to excel"
+#------------------------------------------------------
+@app.route('/import_export_sqlite_to_excel', methods=('GET', 'POST'))
+def import_export_sqlite_to_excel():
+	from import_export_sqlite_to_excel import import_export_sqlite_to_excel_class	
+	from import_export_sqlite_to_excel import copy_sqlite_to_excel
+	
+	# creo la parte di form 
+	form = import_export_sqlite_to_excel_class()	
+
+	# controllo se eseguire il post	
+	if request.method == 'POST':		
+		# lancio la copia da tabella sqlite a file di excel
+		if request.form.get('b_sqlite_table_to_excel'):			
+			v_file_excel = os.path.normpath('temp\\download\\'+form.e_sqlite_table_name.data+'.xlsx')
+			v_ok, v_message = copy_sqlite_to_excel(os.path.normpath('temp\\'+form.e_sqlite.data),
+                                                   form.e_sqlite_table_name.data,
+												   v_file_excel)
+			# emetto eventuale errore o messaggio di copia terminata
+			if v_ok == 'ko':
+				flash(v_message,"danger")
+			else:
+				# apro la finestra per il download del file creato				
+				return send_file(v_file_excel, as_attachment=True)
 				
 	# carico le preferenze
 	else:				
@@ -118,10 +152,112 @@ def import_export():
 		form.e_sqlite.data = o_preferenze.sqlite_db				
 	
 	# render della pagina
-	return render_template('import_export.html',
+	return render_template('import_export_sqlite_to_excel.html',
+							python_form=form)							
+
+#------------------------------------------------------
+# Apertura della pagina import-export "Excel to Oracle"
+#------------------------------------------------------
+@app.route('/import_export_excel_to_oracle', methods=('GET', 'POST'))
+def import_export_excel_to_oracle():
+	from import_export_excel_to_oracle import import_export_excel_to_oracle_class	
+	from import_export_excel_to_oracle import excel_to_oracle_class
+	from werkzeug.utils import secure_filename
+	
+	# creo la parte di form 
+	form = import_export_excel_to_oracle_class()
+
+	# carico elenco dei server nel relativo campo
+	form.e_server_name.choices = o_preferenze.elenco_server
+
+	# effettuo upload di un file excel
+	if request.form.get("b_copy_from_excel_to_oracle"):			
+		v_file = request.files['file']	
+		print(v_file.filename)										
+		if v_file.filename == '':
+			flash('No selected file',"danger")			
+		else:
+			v_filename = secure_filename(v_file.filename)				
+			v_file.save(os.path.join(app.config['UPLOAD_FOLDER'], v_filename))							
+			# eseguo la copia
+			o_copia = excel_to_oracle_class(False,
+                                            form.e_schema.data,
+                                            form.e_schema.data,
+                                            form.e_server_name.data,
+                                            form.e_from_oracle_table.data,                                         
+                                            os.path.join(app.config['UPLOAD_FOLDER'], v_filename))       
+			if o_copia.message_error != '':
+				flash(o_copia.message_error,"danger")				
+			else:
+				flash(o_copia.message_info,"success")				
+
+	# render della pagina
+	return render_template('import_export_excel_to_oracle.html',
+							python_form=form)							
+
+#------------------------------------------------------
+# Apertura della pagina import-export "SQLite to Oracle"
+#------------------------------------------------------
+@app.route('/import_export_sqlite_to_oracle', methods=('GET', 'POST'))
+def import_export_sqlite_to_oracle():
+	from import_export_sqlite_to_oracle import import_export_sqlite_to_oracle_class	
+	from import_export_sqlite_to_oracle import sqlite_to_oracle_class
+	
+	# creo la parte di form 
+	form = import_export_sqlite_to_oracle_class()
+
+	# carico elenco dei server nel relativo campo
+	form.e_server_name.choices = o_preferenze.elenco_server
+
+	# effettuo upload di un file excel
+	if request.form.get("b_copy_from_sqlite_to_oracle"):			
+		# eseguo la copia
+		o_copia = sqlite_to_oracle_class(form.e_sqlite_table_name.data,
+		                                 os.path.normpath('temp\\'+form.e_sqlite.data),
+										 os.path.normpath('temp\\'),
+                                         form.e_schema.data,
+                                         form.e_schema.data,
+                                         form.e_server_name.data,
+                                         form.e_from_oracle_table.data)       
+		if o_copia.message_error != '':
+			flash(o_copia.message_error,"danger")				
+		else:
+			flash(o_copia.message_info,"success")				
+	
+	# carico le preferenze
+	else:				
+		# carico nome database sqlite di default
+		form.e_sqlite.data = o_preferenze.sqlite_db					
+
+	# render della pagina
+	return render_template('import_export_sqlite_to_oracle.html',
+							python_form=form)							
+
+#----------------------------------------------------
+# Apertura della pagina import-export "SQLite viewer"
+#----------------------------------------------------
+@app.route('/import_export_sqlite_viewer', methods=('GET', 'POST'))
+def import_export_sqlite_viewer():
+	from import_export_sqlite_viewer import import_export_sqlite_viewer_class		
+	from import_export_sqlite_viewer import sqlite_viewer
+	
+	# creo la parte di form 
+	form = import_export_sqlite_viewer_class()
+	
+	v_tab_html = ''
+	# carico la tabella e la visualizzo
+	if request.form.get("b_sqlite_table_viewer"):			
+		v_tab_html = sqlite_viewer(os.path.normpath('temp\\'+form.e_sqlite.data),
+								   form.e_sqlite_table_name.data)			
+	# carico le preferenze
+	else:				
+		# carico nome database sqlite di default
+		form.e_sqlite.data = o_preferenze.sqlite_db					
+
+	# render della pagina
+	return render_template('import_export_sqlite_viewer.html',
 							python_form=form,
-							python_tabelle_oracle=v_tabelle_oracle,
-							python_tabelle_sqlite=v_tabelle_sqlite)
+							python_elenco_righe=v_tab_html)							
 
 #------------------------------------------------------------
 # Funzione di supporto per l'apertura della pagina modale di 
@@ -742,7 +878,16 @@ def books():
     
 	# alla funzione load_rubrica gli passo il tipo di rubrica T=Telefonica e eventuale parametro di ricerca
 	return render_template('books.html', python_elenco_righe=load_rubrica())		
-		
+
+#-----------------------------------------------------------
+# Apertura della pagina chat che risponde ad un'altra porta 
+# in quanto va lanciata come applicazione a se stante
+# Il programma chat va configurato perché risponda alla porta 5080
+#-----------------------------------------------------------
+@app.route('/chat')
+def chat(): 	
+	return redirect('http://localhost:5080')
+
 #---------------------------------------	
 # Apertura della pagina di info
 # L'utente inserendo i dati nella sezione "question"

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+
+<head>	
+	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
+	{% include 'bootstrap.html' %}
+	<!-- Stile che serve allo spinner-->
+	<link href="/static/css/spinner.css" rel="stylesheet">		
+</head>
+
+<body>
+
+	<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+  	{% include 'menubar.html' %}
+
+	<!--Main-->
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+		<!-- Titolo della pagina-->
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">Import-export</h1>            
+        </div>
+
+		<!-- Spinner di elaborazione in corso (v. definizione stile di cui sopra) e funzione collegata in fondo a questa pagina-->
+		<div id="idAttendere" style="display: none;">
+			<div class="container">    
+				<div class="row justify-content-center">		
+					<div class="loader"></div>		
+				</div>
+			</div>
+		</div>
+
+		<!-- Zona dedicata ai messaggi-->
+		{% include 'message.html' %}
+
+		<!-- Tutti i campi devono essere nella stessa sezione di form, altrimenti flask non li vede-->
+		<form method="post" class="form-inline">
+	
+			<!-- Campi di intestazione -->
+			<div class="container">							
+				<!-- Intestazione -->
+				<div class="row">
+					<div class="form-group mb-2">
+						<!-- Label nome server (viene assegnata una classe boostrap)-->
+						{{ python_form.e_server_name.label(class_="col-form-label") }}
+						<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_server_name(class_="form-control") }}							
+					</div>
+					<div class="form-group mx-sm-3 mb-2">
+						<!-- Label nome schema (viene assegnata una classe boostrap)-->
+						{{ python_form.e_schema.label(class_="col-form-label") }}					
+						<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_schema(class_="form-control") }}							
+					</div> 						
+					<div class="form-group mx-sm-3 mb-2">
+						<!-- Label nome sqlite db (viene assegnata una classe boostrap)-->
+						{{ python_form.e_sqlite.label(class_="col-form-label") }}					
+						<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_sqlite(class_="form-control") }}							
+					</div> 			
+				</div>						
+			</div>
+		
+			<!-- Campi della sezione "Copy an Oracle table into a SQLite DB"-->			
+			<div class="container">				
+				<div class="row">
+					<h5>Copy an Oracle table into a SQLite DB</h5>
+				</div>
+				<div class="row">			
+					<div class="form-group mb-2">
+						<!-- Label nome tabella (viene assegnata una classe boostrap)-->
+						{{ python_form.e_from_oracle_table.label(class_="col-form-label") }}
+						<!-- Campo nome tabella (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_from_oracle_table(class_="form-control") }}							
+					</div>							
+
+					<div class="form-group mx-sm-3 mb-2">
+						<!--Pulsante per LOV tabelle oracle (da notare come non si tratta di un bottone di submit ma anzi è collegato a funzione sottostante)-->					
+						<button type="button" class="btn btn-secondary" id="b_LOV_tabella_oracle"><i class="fa fa-list"></i></button>							
+					</div> 						
+				</div>
+
+				<div class="row">				
+					<div class="form-group mb-2">
+						<!-- Label condizione where (viene assegnata una classe boostrap)-->
+						{{ python_form.e_oracle_where.label(class_="col-form-label") }}					
+						<!-- Campo condizione where (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_oracle_where(class_="form-control") }}							
+					</div> 						
+				</div>
+				<div class="row">				
+					<div class="form-group mx-sm-3 mb-2">
+						<!-- Pulsante per copiare la tabella oracle dentro sqlite (viene assegnata una classe boostrap)-->							
+						{{ python_form.b_copy_from_oracle_to_sqlite(class_="btn btn-primary btn-block", onclick="Visualizza_idAttendere()") }}							
+					</div> 											
+				</div>
+			</div>
+
+			<!-- Campi della sezione "SQLite table utility"-->				
+			<div class="container">				
+				<div class="row">
+					<h5>SQLite table utility</h5>
+				</div>
+				<div class="row">					
+					<div class="form-group mb-2">
+						<!-- Label nome tabella (viene assegnata una classe boostrap)-->
+						{{ python_form.e_sqlite_table_name.label(class_="col-form-label") }}
+						<!-- Campo nome tabella (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_sqlite_table_name(class_="form-control") }}							
+					</div>									
+			
+					<div class="form-group mx-sm-3 mb-2">
+						<!--Pulsante per LOV tabelle sqlite (da notare come non si tratta di un bottone di submit ma anzi è collegato a funzione sottostante)-->					
+						<button type="button" class="btn btn-secondary" id="b_LOV_tabella_sqlite"><i class="fa fa-list"></i></button>							
+					</div> 						
+				</div>	
+
+				<div class="row">													
+					<div class="form-group mx-sm-3 mb-2">
+						<!-- Pulsante per visualizzare i dati della tabella sqlite (viene assegnata una classe boostrap)-->							
+						{{ python_form.b_sqlite_table_view(class_="btn btn-primary btn-block", onclick="Visualizza_idAttendere()") }}							
+					</div> 						
+					<div class="form-group mx-sm-3 mb-2">
+						<!-- Pulsante per copiare i dati da tabella sqlite in foglio excel (viene assegnata una classe boostrap)-->							
+						{{ python_form.b_sqlite_table_to_excel(class_="btn btn-primary btn-block") }}							
+					</div> 										
+				</div>
+			</div>
+
+			<!-- Campi della sezione "Copy an Excel file, into an Oracle table"-->				
+			<div class="container">				
+				<div class="row">
+					<h5>Copy a Excel file, into an Oracle table</h5>
+				</div>
+				<div class="row">					
+					<div class="form-group mx-sm-3 mb-2">
+						<!--Pulsante per caricare il file di excel-->															
+						<input type=file name="e_excel_file_name">
+						<input type=submit name="b_UPLOAD_excel" value="b_click_UPLOAD_excel">						
+					</div>					
+
+					<div class="form-group mb-2">
+						<!-- Label nome tabella Oracle(viene assegnata una classe boostrap)-->
+						{{ python_form.e_upload_oracle_table.label(class_="col-form-label") }}
+						<!-- Campo nome tabella (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_upload_oracle_table(class_="form-control") }}							
+					</div>									
+			
+					<div class="form-group mx-sm-3 mb-2">
+						<!--Pulsante per LOV tabelle Oracle-->					
+						<button type="button" class="btn btn-secondary" id="b_LOV_tabella_oracle"><i class="fa fa-list"></i></button>							
+					</div> 						
+				</div>					
+			</div>
+		</form>
+
+	</main>
+
+	<!--
+	 __  __  ___  ____    _    _      __        _____ _   _ ____   _____        __
+	|  \/  |/ _ \|  _ \  / \  | |     \ \      / /_ _| \ | |  _ \ / _ \ \      / /
+	| |\/| | | | | | | |/ _ \ | |      \ \ /\ / / | ||  \| | | | | | | \ \ /\ / / 
+	| |  | | |_| | |_| / ___ \| |___    \ V  V /  | || |\  | |_| | |_| |\ V  V /  
+	|_|  |_|\___/|____/_/   \_\_____|    \_/\_/  |___|_| \_|____/ \___/  \_/\_/   
+                                                                              			
+	-->	
+	
+	<!--Definizione della finestra modale dove viene riportato elenco delle tabelle contenute in un database oracle-->
+	<div class="container">
+		<!-- The Modal -->
+		<div class="modal fade" id="myModal_LOV_oracle">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+			 
+					<!-- Modal Header -->
+					<div class="modal-header">						
+						<!--Campo di ricerca e bottone di chiusura-->
+						<input id="id_ricerca_modal_LOV_oracle" class="form-control w-100" type="text" placeholder="Search" aria-label="Search">    
+						<button type="button" class="close" data-dismiss="modal">&times;</button>												
+					</div>
+					
+					<!-- Modal body -->
+					<div class="modal-body" style="height: 400px; overflow-y: auto;">
+						<!-- Importo tramite Flask righe caricate da Python-->	
+						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+							<!-- Tabella-->
+							<div class="table-responsive" id="table_myModal_LOV_oracle">		
+								<!--Qui verrà inserito il risultato della chiamata Ajax a python-->
+							</div>    
+						</div> 
+					</div>
+					
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+			   
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Definizione della finestra modale dove viene riportato elenco delle tabelle contenute in un database sqlite-->
+	<div class="container">
+		<!-- The Modal -->
+		<div class="modal fade" id="myModal_LOV_sqlite">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+			 
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<!--Campo di ricerca e bottone di chiusura-->
+						<input id="id_ricerca_modal_LOV_sqlite" class="form-control w-100" type="text" placeholder="Search" aria-label="Search">    
+						<button type="button" class="close" data-dismiss="modal">&times;</button>												
+					</div>
+					
+					<!-- Modal body -->
+					<div class="modal-body" style="height: 400px; overflow-y: auto;">
+						<!-- Importo tramite Flask righe caricate da Python-->	
+						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+							<!-- Tabella-->
+							<div class="table-responsive" id="table_myModal_LOV_sqlite">		
+								<!--Qui verrà inserito il risultato della chiamata Ajax a python-->
+							</div>    
+						</div> 
+					</div>
+					
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+			   
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Definizione della finestra modale che indica elaborazione in corso (serve quando alla fine dell'elaborazione deve essere effettuato il download)-->
+	<div class="container">
+		<!-- The Modal -->
+		<div class="modal fade" id="myModal_progress">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">			 					
+					<!-- Modal body -->
+					<div class="modal-body">
+						<h4>Transfer data in progress...please wait...</h4>
+					</div>					
+
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Finish</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- Importo tramite Flask html contenente la parte finale della pagina -->
+{% include 'footer.html' %}
+
+<!-- Funzione per visualizzare/nascondere lo spinner di elaborazione in corso-->
+<script>
+	function Visualizza_idAttendere() {
+	  var x = document.getElementById("idAttendere");
+	  if (x.style.display === "none") {
+		x.style.display = "block";
+	  } else {
+		x.style.display = "none";
+	  }
+	}
+</script>
+
+<!-- Funzione a corredo della modal di LOV tabelle oracle per leggere il contenuto di una cella di tabella-->
+<script>	
+	function Fn_LOV_oracle(obj)
+	{		
+		var row=obj.parentNode;
+		// contenuto della cella selezionata (nella cella deve essere presente il codice onclick a questa funzione)
+		//alert("You clicked : " + row.cells[0].innerHTML);						
+		$('#e_from_oracle_table').val( row.cells[0].innerHTML )
+		// chiudo la window modale mymodal
+		$('#myModal_LOV_oracle').modal('toggle');
+	}
+</script>
+
+<!-- Funzione a corredo della modal di LOV tabelle oracle per la ricerca di valore in tabella-->
+<script>
+	$(document).ready(function(){
+	  $("#id_ricerca_modal_LOV_oracle").on("keyup", function() {
+		var value = $(this).val().toLowerCase();      
+		$("#id_table_modal_LOV_oracle tr").filter(function() {
+		  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		});
+	  });
+	});
+</script>  
+
+<!-- Funzione a corredo della modal di LOV tabelle sqlite per leggere il contenuto di una cella di tabella-->
+<script>	
+	function Fn_LOV_sqlite(obj)
+	{		
+		var row=obj.parentNode;
+		// contenuto della cella selezionata (nella cella deve essere presente il codice onclick a questa funzione)
+		//alert("You clicked : " + row.cells[0].innerHTML);						
+		$('#e_sqlite_table_name').val( row.cells[0].innerHTML )
+		// chiudo la window modale mymodal
+		$('#myModal_LOV_sqlite').modal('toggle');
+	}
+</script>
+
+<!-- Funzione a corredo della modal di LOV tabelle oracle per la ricerca di valore in tabella-->
+<script>
+	$(document).ready(function(){
+	  $("#id_ricerca_modal_LOV_sqlite").on("keyup", function() {
+		var value = $(this).val().toLowerCase();      
+		$("#id_table_modal_LOV_sqlite tr").filter(function() {
+		  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		});
+	  });
+	});
+</script>  
+
+<!-- Funzione che fa comparire una modal di attesa...elaborazione -->
+<script type=text/javascript> 
+	$(function() 
+		{ 			
+			$("#b_sqlite_table_to_excel").click(function (event) 
+			{ 
+				// Apro la finestra modale
+				$('#myModal_progress').modal('show');
+			});				
+		 }		
+	); 
+</script>   
+
+<!-- Chiamata ajax ad una funzione di python e successiva apertura della modal page-->
+<!-- Spiegazione del codice
+	 La funzione si attiva al click del bottone p_LOV_tabella_oracle
+	 Viene richiamata la funzione Ajax getJSON che ha i seguenti parametri
+	 	/LOVTabelleOracle = è il nome della pagina lato python flask che viene richiamata
+		Una sezione di dati in formato json = "server_name" : "backup_815", "schema_name" : "smile"
+		Una sezione di ricevimento dati di output che li mette in una zona specifica della modal
+-->
+<script type=text/javascript> 
+	$(function() 
+		{ 			
+			$("#b_LOV_tabella_oracle").click(function (event) 
+			{ 
+				// Richiamo la funzione lato python
+				$.getJSON('/LOVTabelleOracle', { "server_name": $("#e_server_name").val(), "schema_name": $("#e_schema").val() }, function(data) {  $("#table_myModal_LOV_oracle").html(data.risultato); }); 				
+				// Apro la finestra modale
+				$('#myModal_LOV_oracle').modal('show');
+			});				
+		 }		
+	); 
+</script>   
+
+<!-- Chiamata ajax ad una funzione di python e successiva apertura della modal page-->
+<!-- Spiegazione del codice
+	 La funzione si attiva al click del bottone p_LOV_tabella_sqlite
+	 Viene richiamata la funzione Ajax getJSON che ha i seguenti parametri
+	 	/LOVTabelleSQLite = è il nome della pagina lato python flask che viene richiamata
+		Una sezione di dati in formato json = "sqlite_db_name" 
+		Una sezione di ricevimento dati di output che li mette in una zona specifica della modal
+-->
+<script type=text/javascript> 
+	$(function() 
+		{ 			
+			$("#b_LOV_tabella_sqlite").click(function (event) 
+			{ 
+				// Richiamo la funzione lato python
+				$.getJSON('/LOVTabelleSQLite', { "sqlite_db_name": $("#e_sqlite").val() }, function(data) {  $("#table_myModal_LOV_sqlite").html(data.risultato); }); 				
+				// Apro la finestra modale
+				$('#myModal_LOV_sqlite').modal('show');
+			});				
+		 }		
+	); 
+</script>   
+
+</body>
+</html>
