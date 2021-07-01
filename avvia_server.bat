@@ -1,5 +1,7 @@
 echo off
 echo +---------------------------------------------------------------------------------+
+echo ! MGrep                                                                           !
+echo !                                                                                 !
 echo ! Avvio il server Flask che andra' in ascolto sulla porta http://10.0.47.9:5000/  !
 echo ! (dove 5000 e' la porta di default e 10.0.47.9 e' l'indirizzo IP del mio PC)     !
 echo +---------------------------------------------------------------------------------+

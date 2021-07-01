@@ -489,12 +489,9 @@ def jobs_status():
 	# processo il post
 	v_tab_html = ''
 	if request.method == 'POST':
-		e_server_name = form.e_server_name.data		
-		c_enable = form.c_enable.data
-		
 		# è stato richiesto di visualizzare gli oggetti invalidi
 		if request.form.get('b_ricerca_jobs'):
-			v_tab_html = get_elenco_jobs(o_preferenze, e_server_name, c_enable)
+			v_tab_html = get_elenco_jobs(o_preferenze, form.e_server_name.data, form.c_enable.data, form.e_search_by_name.data)
 	
 	# restituisco la pagina
 	return render_template('jobs_status.html', 
@@ -879,14 +876,40 @@ def books():
 	# alla funzione load_rubrica gli passo il tipo di rubrica T=Telefonica e eventuale parametro di ricerca
 	return render_template('books.html', python_elenco_righe=load_rubrica())		
 
+#---------------------------------------	
+# Apertura della pagina sql editor
+#---------------------------------------	
+@app.route('/sql_editor', methods=('GET', 'POST'))
+def sql_editor(): 	
+	# importa librerie necessarie
+	from sql_editor import sql_editor_class
+	from sql_editor import sql_execute
+
+	# carico la parte di form 
+	form = sql_editor_class()
+
+	# carico elenco dei server nel relativo campo
+	form.e_server_name.choices = o_preferenze.elenco_server
+
+	# eseguo sql
+	v_tab_html = ''
+	if request.method == 'POST' and request.form.get('b_sql_execute'):						
+		v_tab_html = sql_execute( form.e_server_name.data, form.e_schema.data, request.form.get('e_sql') )
+
+	# rendering della pagina	
+	return render_template('sql_editor.html', 
+							python_form=form,
+							python_elenco_righe=v_tab_html)		
+
 #-----------------------------------------------------------
 # Apertura della pagina chat che risponde ad un'altra porta 
 # in quanto va lanciata come applicazione a se stante
 # Il programma chat va configurato perché risponda alla porta 5080
+# In questo caso c'è fisso l'indirizzo del mio PC di sviluppo....
 #-----------------------------------------------------------
 @app.route('/chat')
 def chat(): 	
-	return redirect('http://localhost:5080')
+	return redirect('http://10.0.47.9:5080')
 
 #---------------------------------------	
 # Apertura della pagina di info

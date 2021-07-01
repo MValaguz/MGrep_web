@@ -7,14 +7,11 @@
  Descrizione...: Programma per interrogare i job di sistema Oracle
 """
 
-#Librerie sistema
-import sys
-import os
 #Librerie di data base
 import cx_Oracle
 # Importa librerie per creazione form
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextField, IntegerField, TextAreaField, SubmitField, RadioField, SelectField, BooleanField
+from wtforms import StringField, SubmitField, SelectField, BooleanField
 from wtforms import validators, ValidationError
 
 class jobs_status_class(FlaskForm):
@@ -23,10 +20,10 @@ class jobs_status_class(FlaskForm):
     """
     e_server_name = SelectField('Oracle name server:')    
     c_enable = BooleanField('Only jobs disabled:')
-   
+    e_search_by_name = StringField('Search by name or comment:')   
     b_ricerca_jobs = SubmitField('Start')
                                                                 
-def get_elenco_jobs(o_preferenze, e_server_name, c_enable):
+def get_elenco_jobs(o_preferenze, e_server_name, c_enable, e_search_by_name):
     """
         Restituisce in una tupla elenco dei jobs di sistema
     """
@@ -50,8 +47,8 @@ def get_elenco_jobs(o_preferenze, e_server_name, c_enable):
         v_where = "ENABLED='TRUE'"        
     
     # eventuale stringa di ricerca per nome o commento del job        
-    #if self.e_search1.displayText() != '':
-    #    v_where += " AND (JOB_NAME LIKE '%" + self.e_search1.displayText() + "%' OR COMMENTS LIKE '%" + self.e_search1.displayText() + "')" 
+    if e_search_by_name != '':
+        v_where += " AND (UPPER(JOB_NAME) LIKE '%" + e_search_by_name.upper() + "%' OR UPPER(COMMENTS) LIKE '%" + e_search_by_name.upper() + "')" 
                             
     # select per la ricerca degli oggetti invalidi
     v_select = """SELECT JOB_NAME, 

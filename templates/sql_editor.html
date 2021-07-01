@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Importo tramite Flask html contenente i riferimenti alle librerie bootstrap -->
+	{% include 'bootstrap.html' %}	
+	<!-- Includo librerie di codemirror che è un editor via web -->
+	<script src= "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.css">
+	<script src= "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/javascript/javascript.js"></script>
+	<!-- si tratta di un tema per codemirror....
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/base16-dark.css">
+	-->
+
+	<!-- Stile della textarea dove presente il plugin codemirror-->
+	<style>
+		.CodeMirror {        
+		width: 100%;
+        border: 1px solid #3a3a3a;
+        font-size: 16px;
+        font-family:'Courier New', Courier, monospace;
+        line-height: 1.2em;
+        height: 4em;
+    }
+	</style>
+</head>
+
+<body>
+
+	<!-- Importo tramite Flask html contenente i menu e tutta l'intestazione -->
+  	{% include 'menubar.html' %}
+
+	 <!--Main-->
+	 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">		 
+
+		<!-- Titolo della pagina-->
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">SQL editor</h1>            
+        </div>
+
+		<!-- Tutti i campi devono essere nella stessa sezione di form, altrimenti flask non li vede-->
+		<div class="container">							
+			<form method="post">							
+				<div class="row">											
+					<!-- Label nome server (viene assegnata una classe boostrap)-->
+					{{ python_form.e_server_name.label }}
+					<div class="col">						
+						<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_server_name(class_="form-control") }}							
+					</div>
+					<!-- Label nome schema (viene assegnata una classe boostrap)-->
+					{{ python_form.e_schema.label }}					
+					<div class="col">						
+						<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_schema(class_="form-control") }}							
+					</div> 						
+					<div class="col">										
+						<!-- Pulsante per eseguire lo script (viene assegnata una classe boostrap)-->							
+						{{ python_form.b_sql_execute(class_="btn btn-primary btn-block", onclick="Pulisci_array()") }}													
+					</div>											
+					<div class="col">										
+						<!-- Pulsante per eseguire la generazione dell'sql con le modifiche effettuate dall'utente (non è sotto il controllo di WTForm perché gestito dalla pagina)-->							
+						<button type = "button" id="b_commit" class = "btn btn-success btn-block" disabled = "disabled" onclick="Generate_SQL()">Make SQL</button>
+					</div>											
+				</div>
+
+				<div class="row">																
+					<!-- Label sql text (viene assegnata una classe boostrap)-->
+					{{ python_form.e_sql.label }}					
+					<div class="input-group mb-2">						
+						<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->							
+						{{ python_form.e_sql(class_="form-control") }}							
+					</div> 						
+				</div>
+			</form>
+		</div>
+
+		<!-- Editable table -->	
+		<div class="card" style="border: none;">
+			<div class="card-body">
+				<div id="table" class="table-editable">				
+					<table id="html_sql_table" class="table table-bordered table-responsive-md table-striped text-center">				
+						{{ python_elenco_righe | safe }}							
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-- Editable table -->		 
+	</main>
+
+	<!--
+	 __  __  ___  ____    _    _      __        _____ _   _ ____   _____        __
+	|  \/  |/ _ \|  _ \  / \  | |     \ \      / /_ _| \ | |  _ \ / _ \ \      / /
+	| |\/| | | | | | | |/ _ \ | |      \ \ /\ / / | ||  \| | | | | | | \ \ /\ / / 
+	| |  | | |_| | |_| / ___ \| |___    \ V  V /  | || |\  | |_| | |_| |\ V  V /  
+	|_|  |_|\___/|____/_/   \_\_____|    \_/\_/  |___|_| \_|____/ \___/  \_/\_/   
+                                                                              			
+	-->	
+	
+	<!--Definizione della finestra modale dove viene riportato elenco delle tabelle contenute in un database oracle-->
+	<div class="container">
+		<!-- The Modal -->
+		<div class="modal fade" id="myModal_generate_SQL">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">			 										
+					<!-- Modal Header -->
+					<div class="modal-header">						
+						<!--Campo di ricerca e bottone di chiusura-->
+						<h5>SQL results</h5>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>												
+					</div>
+					<!-- Modal body -->
+					<div class="modal-body">						
+						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">							
+							<p id="myModal_risultato"></p>
+						</div> 
+					</div>					
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>			   
+				</div>
+			</div>
+		</div>
+	</div>	
+
+<!-- Importo tramite Flask html contenente la parte finale della pagina -->
+{% include 'footer.html' %}
+
+<!-- Attivazione della libreria codemirror sul campo editor sql-->
+<script type="text/javascript">
+	var editor_sql = CodeMirror.fromTextArea(document.getElementById("e_sql"), {
+            styleActiveLine: true,
+            lineNumbers: true,
+            matchBrackets: true			
+        });
+</script>
+
+<!-- Dichiarazione array e variabili globali alla pagina (questo pezzo di codice viene eseguito al caricamento della pagina automaticamete)-->
+<script type="text/javascript">
+	// array che conterrà tutte le modifiche effettuate dall'utente
+	var a_modifiche = [ ];
+	// variabile di appoggio utilizzata per capire se un valore di cella è effettivamente cambiato
+	var v_old_value = '';
+</script>
+
+<!-- Funzione di esecuzione dell'sql. Ripulisce l'array globale di pagina che conterrà elenco delle modifiche e disattiva il bottone di commit-->
+<script type="text/javascript">
+	function Pulisci_array()		
+	{		
+		console.log("Pulizia valori");
+		a_modifiche = [ ];
+		v_old_value = '';		
+		$("#b_commit").attr("disabled", true);
+	}
+</script>
+
+<!-- Questa funzione viene richiamata ogni qual volta si entra in una cella della tabella-->
+<script type="text/javascript">
+	// intercetto ingresso nella cella tabella e carico la var globale che utilizzerò all'uscita per capire se valore cambiato
+	// da notare come dentro la tabella sia stata inserita la classe row_data e su tale classe viene attivata questa funzione
+	$(document).on('focusin', '.row_data', function(event) 
+	{	
+		//console.log("Ingresso");
+		v_old_value = $(this).text();
+	})			
+</script>
+
+<!-- Questa funzione viene richiamata ogni qual volta si esce da una cella della tabella-->
+<script type="text/javascript">
+	// intercetto l'uscita da una cella della tabella e carico array che valorizza tutte le modifiche
+	// da notare come dentro la tabella sia stata inserita la classe row_data e su tale classe viene attivata questa funzione
+	$(document).on('focusout', '.row_data', function(event) 
+	{				
+		// carico il valore della riga dentro l'array
+		//a_modifiche.push($(this).text())
+		//console.log("Old value" + v_old_value);
+		
+		// Solo se il valore è stato modificato ...
+		if ( v_old_value != $(this).text() ) 
+		{
+				// tramite jquery, recupero la riga e la colonna dove era posizionato il cursore prima di uscire dalla cella
+				var v_row_index = $(this).parent().index();
+				var v_col_index = $(this).index();
+
+				//console.log(v_row_index);
+				//console.log(v_col_index);
+
+				//var x = document.getElementById("html_sql_table").rows[0].cells.item(0).innerHTML; 
+				//console.log(x);
+				//var x = document.getElementById("html_sql_table").rows[1].cells.item(0).innerHTML; 
+				//console.log(x);
+				//var x = document.getElementById("html_sql_table").rows[1].cells.item(1).innerHTML; 
+				//console.log(x);
+
+				v_row_index = v_row_index + 1;
+				// prendo ROWID della riga che si trova nella colonna nascosta
+				var v_rowid = document.getElementById("html_sql_table").rows[v_row_index].cells.item(0).innerHTML; 
+				//console.log(v_rowid);
+				// prendo nome della colonna (es. AZIEN_CO)
+				var v_row_name = document.getElementById("html_sql_table").rows[0].cells.item(v_col_index).innerHTML; 
+				//console.log(v_row_name);
+				// prendo valore della cella 
+				var v_cell_value = document.getElementById("html_sql_table").rows[v_row_index].cells.item(v_col_index).innerHTML; 
+				//console.log(v_cell_value);
+
+				// carico nell'array l'SQL che dovrebbe essere eseguito (da notare come il tab <br> venga sostituito con un blank)
+				a_modifiche.push("UPDATE table_name SET " + v_row_name + "='" + v_cell_value.replace("<br>","") + "' WHERE ROWID='" + v_rowid + "';");
+
+				//event.preventDefault();
+				// emetto il messaggio con il valore contenuto nel campo
+				// console.log($(this).text());		
+
+				// output del contenuto della tabella
+				console.log(a_modifiche);		
+
+				// abilito il pulsante di commit
+				$("#b_commit").attr("disabled", false);
+		}
+	})		
+</script>
+
+<!-- Apre la finestra con tutte le istruzioni SQL che vanno eseguite per aggiornare i dati modificati-->
+<script type="text/javascript">
+	function Generate_SQL()		
+	{				
+		// carico l'array nel risultato
+		var v_risultato = '';
+		for (let i = 0; i < a_modifiche.length; i++) {
+  			v_risultato += a_modifiche[i] + "<br>";
+		} 
+		$('#myModal_risultato').html(v_risultato);
+		
+		// visualizzo la finestra modale
+		$('#myModal_generate_SQL').modal('show');
+	}
+</script>
+
+</body>
+</html>

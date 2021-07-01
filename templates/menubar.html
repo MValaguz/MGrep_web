@@ -27,21 +27,34 @@
     <nav class="col-md-2 d-none d-md-block bg-light sidebar">
       <div class="sidebar-sticky">
         <ul class="nav flex-column">          
+
+          <!-- Richiamo della home -->
           <li class="nav-item">
             <a class="nav-link" href=".">
               <i class="fa fa-home"></i>
               Home
             </a>
           </li>
+
+          <!-- Ricerca stringhe -->
           <li class="nav-item">
             <a class="nav-link" href="search_string">
               <i class="fa fa-search"></i>
               Search strings
             </a>
           </li>
+
+          <!-- Rubrica telefonica -->
+          <li class="nav-item">
+            <a class="nav-link" href="books">                  
+              <i class="fa fa-phone"></i>
+              Phone book
+            </a>
+          </li>
+
           <!--Submenu import export-->
           <li class="nav-item">
-            <a class="nav-link" href="#import_export_Submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <a class="nav-link" href="#import_export_Submenu" data-toggle="collapse">
               <i class="fa fa-exchange-alt"></i>
                Import export
             </a>
@@ -78,85 +91,106 @@
                 </li>                
             </ul>
           </li>
-          <!--Fine submenu-->
+
+          <!--Submenu DB Tools-->
           <li class="nav-item">
-            <a class="nav-link" href="books">                  
-              <i class="fa fa-phone"></i>
-              Phone book
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="recompiler">
-              <i class="fa fa-bomb"></i>
-              Invalid object
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sessions_locks">
-              <i class="fa fa-link"></i>
-              Sessions locks
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="table_locks">
-              <i class="fa fa-lock"></i>
-              Table locks
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sessions_list">                  
-              <i class="fa fa-list"></i>
-              Sessions
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="top_sessions">                  
-              <i class="fa fa-stopwatch"></i>
-              Top sessions
-            </a>
-          </li>                        
-          <li class="nav-item">
-            <a class="nav-link" href="jobs_status">                  
-              <i class="fa fa-running"></i>
-              Job status
-            </a>
-          </li>                        
-          <li class="nav-item">
-            <a class="nav-link" href="table_space">                  
+            <a class="nav-link" href="#db_tools_Submenu" data-toggle="collapse">
               <i class="fa fa-database"></i>
-              Table space
+               DB tools
             </a>
-          </li>                        
-          <li class="nav-item">
-            <a class="nav-link" href="table_wasted">                  
-              <i class="fa fa-trash-alt"></i>
-              Table wasted
-            </a>
-          </li>                        
-          <li class="nav-item">
-            <a class="nav-link" href="server_status">                  
-              <i class="fa fa-server"></i>
-              Server status
-            </a>
-          </li>                        
-          <li class="nav-item">
-            <a class="nav-link" href="top_tables">                  
-              <i class="fa fa-chart-pie"></i>
-              Top tables
-            </a>
-          </li>                        
-          <li class="nav-item">
-            <a class="nav-link" href="ascii_graphics">                  
-              <i class="fa fa-palette"></i>
-              Ascii graphics generator
-            </a>
+            <ul class="collapse list-unstyled" id="db_tools_Submenu" style="padding-left: 30px;">
+                <li class="nav-item">
+                  <a class="nav-link" href="recompiler">
+                    <i class="fa fa-bomb"></i>
+                    Invalid object
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="sessions_locks">
+                    <i class="fa fa-link"></i>
+                    Sessions locks
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="table_locks">
+                    <i class="fa fa-lock"></i>
+                    Table locks
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="sessions_list">                  
+                    <i class="fa fa-list"></i>
+                    Sessions
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="top_sessions">                  
+                    <i class="fa fa-stopwatch"></i>
+                    Top sessions
+                  </a>
+                </li>                        
+                <li class="nav-item">
+                  <a class="nav-link" href="jobs_status">                  
+                    <i class="fa fa-running"></i>
+                    Job status
+                  </a>
+                </li>                        
+                <li class="nav-item">
+                  <a class="nav-link" href="table_space">                  
+                    <i class="fa fa-database"></i>
+                    Table space
+                  </a>
+                </li>                        
+                <li class="nav-item">
+                  <a class="nav-link" href="table_wasted">                  
+                    <i class="fa fa-trash-alt"></i>
+                    Table wasted
+                  </a>
+                </li>                        
+                <li class="nav-item">
+                  <a class="nav-link" href="server_status">                  
+                    <i class="fa fa-server"></i>
+                    Server status
+                  </a>
+                </li>                        
+                <li class="nav-item">
+                  <a class="nav-link" href="top_tables">                  
+                    <i class="fa fa-chart-pie"></i>
+                    Top tables
+                  </a>
+                </li>                        
+            </ul>
           </li>
+
+          <!--Submenu extra tools-->
           <li class="nav-item">
-            <a class="nav-link" href="download_from_server">                  
-              <i class="fa fa-download"></i>
-              Download an object from iAS12g
+            <a class="nav-link" href="#extra_tools_Submenu" data-toggle="collapse">
+              <i class="fa fa-tools"></i>
+               Extra tools
             </a>
-          </li>     
+            <ul class="collapse list-unstyled" id="extra_tools_Submenu" style="padding-left: 30px;">
+                <li class="nav-item">
+                  <a class="nav-link" href="sql_editor">                  
+                    <i class="fa fa-code"></i>
+                    SQL editor
+                  </a>
+                </li>     
+                <li class="nav-item">
+                  <a class="nav-link" href="ascii_graphics">                  
+                    <i class="fa fa-palette"></i>
+                    Ascii graphics generator
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="download_from_server">                  
+                    <i class="fa fa-download"></i>
+                    Download an object from iAS12g
+                  </a>
+                </li>     
+            </ul>
+          </li>
+        
+          <!-- Chat -->
           <li class="nav-item">
             <!--La chat viene fatta girare tramite altra app e viene aperta in altro tab del browser-->
             <a class="nav-link" href="chat" target="_blank">                  
@@ -164,6 +198,7 @@
               Chat
             </a>
           </li>     
+
         </ul>                     
       </div>
     </nav>

@@ -45,35 +45,35 @@
 				{% endfor %}
 				{% block content %} {% endblock %}
 			</div>	
-			<!-- Form di input dei dati-->
-			<div class="row justify-content-center">
-				<div class="col-6">					    			
-					<form method="post" class="form-horizontal">
-						<div class="form-group row">
-							<!-- Label nome server (viene assegnata una classe boostrap)-->
-							{{ python_form.e_server_name.label(class_="col-sm-4 control-label") }}					
-							<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->
-							<div class="col-sm-4">
-								{{ python_form.e_server_name(class_="form-control") }}
-							</div>
-						</div> 						
-						<div class="form-group row">
-							<!-- Label check box per selezionare job disabilitati (viene assegnata una classe boostrap)-->
-							{{ python_form.c_enable.label(class_="col-sm-4 control-label") }}					
-							<!-- Check box per selezionare job disabilitati (viene assegnata una classe boostrap)-->
-							<div class="col-sm-4">
-								{{ python_form.c_enable(class_="form-control") }}					
-							</div>
-						</div> 						
-						<div class="form-group row">
-							<!-- Pulsante di avvio ricerca (viene assegnata una classe boostrap)-->
-							<div class="col">
-								{{ python_form.b_ricerca_jobs(class_="btn btn-primary btn-block", onclick="Visualizza_idAttendere()") }}
-							</div>					
-						</div>
-					</form>			
+
+			<!-- Form di input dei dati-->			
+			<form method="post" class="form-inline">
+				<div class="form-group mr-4">
+					<!-- Label nome server (viene assegnata una classe boostrap)-->
+					{{ python_form.e_server_name.label }}	
+					<p>&emsp;</p>									
+					<!-- Lista di valori per nome server (viene assegnata una classe boostrap)-->						
+					{{ python_form.e_server_name(class_="form-control") }}
 				</div>
-			</div>
+				<div class="form-group mr-4">
+					<!-- Label check box per selezionare job disabilitati (viene assegnata una classe boostrap)-->
+					{{ python_form.c_enable.label }}					
+					<p>&emsp;</p>									
+					<!-- Check box per selezionare job disabilitati (viene assegnata una classe boostrap)-->							
+					{{ python_form.c_enable(class_="form-control") }}					
+				</div>
+				<div class="form-group mr-4">
+					<!-- Label search by name per ricercare tramite nome job (viene assegnata una classe boostrap)-->
+					{{ python_form.e_search_by_name.label }}		
+					<p>&emsp;</p>												
+					<!-- Item per inserire stringa di ricerca nome job o commento (viene assegnata una classe boostrap)-->								
+					{{ python_form.e_search_by_name(class_="form-control") }}																		
+				</div>
+				<div class="form-group mr-4">
+					<!-- Pulsante di avvio ricerca (viene assegnata una classe boostrap)-->						
+					{{ python_form.b_ricerca_jobs(class_="btn btn-primary btn-block", onclick="Visualizza_idAttendere()") }}
+				</div>
+			</form>										
 		</div>
 
 		<!-- Importo tramite Flask righe caricate da Python-->	
