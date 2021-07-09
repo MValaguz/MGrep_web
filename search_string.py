@@ -425,7 +425,7 @@ def ricerca_stringhe(p_form):
             v_html += '<tr>'
         
             v_html += '<td>' + str(row[0]) + '</td>'    
-            v_html += '<td>' + str(row[1]) + '</td>'    
+            v_html += '<td>' + str(row[1]) + '</td>'            
         
             # chiusura riga
             v_html += '</tr>'
