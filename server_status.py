@@ -9,7 +9,6 @@
 
 #Libreria sistema
 import  os
-import  sys
 import  subprocess
                
 def action_disc_usage(o_preferenze):
